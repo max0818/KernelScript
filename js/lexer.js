@@ -110,7 +110,11 @@ class Lexer {
 		const next = this.next();
 
 		// Пропуск пробела
-		if (current === ' ') this.pos++;
+		if (
+			current === ' ' ||
+			current === ';' ||
+			current === '\t'
+		) this.pos++;
 
 		// Следующая строка
 		else if (current === '\n') this.nextRow();
@@ -226,18 +230,39 @@ class Lexer {
 	arithmeticSymbolsChecker() {
 		let operator = this.current();
 		let type;
+		let doubleType;
 
-		if (operator === '+') type = 'addOperator';
-		else if (operator === '-') type = 'subOperator';
-		else if (operator === '*') type = 'multOperator';
-		else if (operator === '/') type = 'addOperator';
-		else if (operator === '%') type = 'addOperator';
+		this.pos++;
+
+		if (operator === '+') {
+			type = 'add';
+			doubleType = 'increment';
+		} else if (operator === '-') {
+			type = 'sub';
+			doubleType = 'decrement';
+		} else if (operator === '*') {
+			type = 'mult';
+			doubleType = 'exponent';
+		} else if (operator === '/') type = 'div';
+		else if (operator === '%') type = 'mod';
+
+		if (['+', '-', '*'].includes(this.current()) && this.current() === operator) {
+			operator += this.current();
+			type = doubleType + 'Operator';
+		} else if (this.current() === '=') {
+			operator += this.current();
+			type += 'AssignOperator';
+		} else type += 'Operator';
+
+		this.pos++;
+
+		this.addToken(operator, type, this.row);
 	}
 }
 
 const code = `
 
-
+x ** 5;
 
 `;
 
