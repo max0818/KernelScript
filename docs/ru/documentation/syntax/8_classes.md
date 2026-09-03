@@ -56,6 +56,39 @@ private static название(аргументы) {
 }
 ```
 
+## Вызов внутри класса
+```ks
+# Вызов поля
+this.поле
+
+# Вызов метода
+this.метод(аргументы)
+```
+
+## Наследование
+```ks
+class parent {
+	код
+}
+
+class child extends parent {
+	init(аргументы) {
+		super() # Инициализация родительского класса. Можно только в конструкторе
+	}
+
+	код
+}
+```
+
+## Вызов родителя класса
+```ks
+# Вызов поля
+super.поле
+
+# Вызов метода
+super.метод(аргументы)
+```
+
 ## Создание экземпляра
 ```ks
 new класс(аргументы)
@@ -63,4 +96,37 @@ new класс(аргументы)
 
 ## Примеры
 
-### 
+### Класс для работы с числами
+```ks
+flag Console
+
+class NumberWork {
+	private a
+	private b
+	private result
+
+	init(a: float, b: float) {
+		this.a = a
+		this.b = b
+
+		this.add()
+	}
+
+	private add() {
+		this.result = a + b
+	}
+
+	get() {
+		return this.result
+	}
+}
+
+const add = new NumberWork(5, 6)
+var added = add.get()
+
+/*
+Вывод консоли:
+11.0
+
+*/
+```
