@@ -23,6 +23,24 @@ class Parser {
 		return this.pos >= this.tokens.length;
 	}
 
+	predictValue(value) {
+		if (this.tokens[this.pos].value !== value) {
+			console.error(`В строке ${this.tokens[this.pos].row} ожидалось ${value}, но был получен: ${this.tokens[this.pos].value}`);
+			return false;
+		}
+
+		return true;
+	}
+
+	predictType(type) {
+		if (this.tokens[this.pos].type !== type) {
+			console.error(`В строке ${this.tokens[this.pos].row} ожидалось ${type}, но был получен: ${this.tokens[this.pos].type}`);
+			return false;
+		}
+
+		return true;
+	}
+
 	mainParse() {}
 }
 
