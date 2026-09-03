@@ -4,18 +4,22 @@ class Lexer {
 	static comparisonSymbols = ['=', '!', '<', '>'];
 	static bitWorkSymbols = ['&', '|', '^', '~'];
 	static parenthesesSymbols = ['(', ')', '[', ']', '{', '}'];
-	static unaryOperators = ['.', ',', ':'];
-	static doubleOperators = [
-		// Сравнение
-		'==', '!=', '<=', '>=',
-
-		// Присвоение
-		'+=', '-=', '*=', '/=', '%=', '++', '--',
-
-		// Битовые
-		'<<', '>>'
-	];
+	static singleOperators = ['.', ',', ':'];
 	static valueWords = [
+		// Логика
+		'true',
+		'false',
+
+		// Типы
+		'any',
+		'int',
+		'float',
+		'string',
+		'array',
+		'object',
+		'function',
+
+		// Неопределённые значения
 		'null',
 		'NaN',
 		'Infinity'
@@ -69,6 +73,72 @@ class Lexer {
 		this.init();
 	}
 
+	// Инициализация лексера
+	init() {
+		let maxSteps = 1000;
+		let step = 0;
+		while (!this.isEnd() && step < maxSteps) {
+			this.mainChecker();
+			step++;
+		}
+
+		console.log(this.tokens);
+	}
+
+	// Главный метод
+	mainChecker() {
+		const current = this.current();
+		const next = this.next();
+
+		// Пропуск пробела
+		if (
+			current === ' ' ||
+			current === ';' ||
+			current === '\t'
+		) this.pos++;
+
+		// Следующая строка
+		else if (current === '\n') this.nextRow();
+
+		// Однострочные комментарии
+		else if (current === '#') this.commentLineChecker();
+
+		// Многострочные комментарии
+		else if (current === '/' && next === '*') this.commentLinesChecker();
+
+		// Числа иной системы счисления
+		else if (
+			current === '0' &&
+			(next === 'b' || next === 'o' || next === 'x')
+		) this.differentNumberChecker();
+
+		// Числа
+		else if (current.match(/[0-9]+/)) this.numberChecker();
+
+		// Идентификатор
+		else if (current.match(/[A-Za-z]+/)) this.wordChecker();
+
+		// Строки
+		else if (Lexer.stringSymbols.includes(current)) this.stringChecker();
+
+		// Арифметика
+		else if (Lexer.arithmeticSymbols.includes(current)) this.arithmeticSymbolsChecker();
+
+		// Битовые операции
+		else if (Lexer.bitWorkSymbols.includes(current)) this.bitWorkChecker();
+
+		// Сравнение
+		else if (Lexer.comparisonSymbols.includes(current)) this.comparisonChecker();
+
+		// Одиночные символы
+		else if (
+			Lexer.parenthesesSymbols.includes(current) ||
+			Lexer.singleOperators.includes(current)
+		) this.singleSymbolsChecker();
+	}
+
+	// Вспомогательные методы
+
 	current() {
 		return this.code[this.pos];
 	}
@@ -94,51 +164,25 @@ class Lexer {
 		});
 	}
 
-	init() {
-		let maxSteps = 100;
-		let step = 0;
-		while (!this.isEnd() && step < maxSteps) {
-			this.mainChecker();
-			step++;
+	// Комментарии
+
+	commentLineChecker() {
+		while (!this.isEnd() && this.current() !== '\n') {
+			this.pos++;
+		}
+	}
+
+	commentLinesChecker() {
+		this.pos += 2;
+
+		while (!this.isEnd() && !(this.current() === '*' && this.next() === '/')) {
+			this.pos++;
 		}
 
-		console.log(this.tokens);
+		this.pos += 2;
 	}
 
-	mainChecker() {
-		const current = this.current();
-		const next = this.next();
-
-		// Пропуск пробела
-		if (
-			current === ' ' ||
-			current === ';' ||
-			current === '\t'
-		) this.pos++;
-
-		// Следующая строка
-		else if (current === '\n') this.nextRow();
-
-		// Двоичные числа
-		else if (
-			current === '0' &&
-			next === 'b' ||
-			next === 'o' ||
-			next === 'x'
-		) this.differentNumberChecker();
-
-		// Числа
-		else if (current.match(/[0-9]+/)) this.numberChecker();
-
-		// Идентификатор
-		else if (current.match(/[A-Za-z]+/)) this.wordChecker();
-
-		// Строки
-		else if (Lexer.stringSymbols.includes(current)) this.stringChecker();
-
-		// Арифметика
-		else if (Lexer.arithmeticSymbols.includes(current)) this.arithmeticSymbolsChecker();
-	}
+	// Числа
 
 	differentNumberChecker() {
 		const next = this.next();
@@ -190,11 +234,13 @@ class Lexer {
 		this.addToken(number, type, this.row);
 	}
 
+	// Ключевые слова и идентификаторы
+
 	wordChecker() {
 		let word = '';
 		let type = 'identifier';
 
-		while (!this.isEnd() && this.current().match(/\w+/)) {
+		while (!this.isEnd() && this.current().match(/[A-Za-z0-9]+/)) {
 			word += this.current();
 			this.pos++;
 		}
@@ -207,10 +253,12 @@ class Lexer {
 		this.addToken(word, type, this.row);
 	}
 
+	// Строка
+
 	stringChecker() {
 		const symbol = this.current();
 		let string = symbol;
-		let type = 'String';
+		let type = 'string';
 
 		this.pos++;
 
@@ -222,48 +270,77 @@ class Lexer {
 		this.pos++;
 		string += symbol;
 
-		if (symbol === '`') type = 'NestString';
+		//if (symbol === '`') type = 'nestString';
 
 		this.addToken(string, type, this.row);
 	}
 
+	// Операторы
+
 	arithmeticSymbolsChecker() {
 		let operator = this.current();
-		let type;
-		let doubleType;
 
 		this.pos++;
-
-		if (operator === '+') {
-			type = 'add';
-			doubleType = 'increment';
-		} else if (operator === '-') {
-			type = 'sub';
-			doubleType = 'decrement';
-		} else if (operator === '*') {
-			type = 'mult';
-			doubleType = 'exponent';
-		} else if (operator === '/') type = 'div';
-		else if (operator === '%') type = 'mod';
 
 		if (['+', '-', '*'].includes(this.current()) && this.current() === operator) {
 			operator += this.current();
-			type = doubleType + 'Operator';
+
+			if (this.current() === '*' && this.next() === '=') {
+				operator += this.next();
+				this.pos += 2;
+			}
+
+			this.pos++;
 		} else if (this.current() === '=') {
 			operator += this.current();
-			type += 'AssignOperator';
-		} else type += 'Operator';
+			this.pos++;
+		}
+
+		this.addToken(operator, operator, this.row);
+	}
+
+	bitWorkChecker() {
+		let operator = this.current();
+		this.pos++;
+		this.addToken(operator, operator, this.row);
+	}
+
+	comparisonChecker() {
+		let operator = this.current();
 
 		this.pos++;
 
-		this.addToken(operator, type, this.row);
+		if (operator === '=' && this.current() === '=') {
+			operator += '=';
+			this.pos++;
+		} else if (operator !== '=') {
+			if (this.current() === '=') {
+				operator += '=';
+				this.pos++;
+			} else if (
+				['<', '>'].includes(operator) &&
+				operator === this.current()
+			) {
+				operator += this.current();
+				this.pos++;
+			}
+		}
+
+		this.addToken(operator, operator, this.row);
+	}
+
+	// Скобки и иные одиночные символы
+
+	singleSymbolsChecker() {
+		let symbol = this.current();
+
+		this.pos++;
+
+		if (symbol === '.' && this.current() === '.' && this.next() === '.') {
+			symbol += '..';
+			this.pos += 2;
+		}
+
+		this.addToken(symbol, symbol, this.row);
 	}
 }
-
-const code = `
-
-x ** 5;
-
-`;
-
-new Lexer(code);
