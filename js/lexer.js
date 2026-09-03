@@ -4,7 +4,7 @@ class Lexer {
 	static comparisonSymbols = ['=', '!', '<', '>'];
 	static bitWorkSymbols = ['&', '|', '^', '~'];
 	static parenthesesSymbols = ['(', ')', '[', ']', '{', '}'];
-	static singleOperators = ['.', ',', ':'];
+	static singleOperators = ['.', ',', ':', '?'];
 	static valueWords = [
 		// Логика
 		'true',
