@@ -12,6 +12,7 @@ class Lexer {
 
 		// Типы
 		'any',
+		'bool',
 		'int',
 		'float',
 		'string',

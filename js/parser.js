@@ -8,7 +8,7 @@ class Parser {
 	constructor(code) {
 		this.tokens = new Lexer(code).tokens;
 
-		console.log(this.tokens);
+		this.init();
 	}
 
 	peek() {
@@ -23,34 +23,80 @@ class Parser {
 		return this.pos >= this.tokens.length;
 	}
 
-	predictValue(value) {
-		if (this.tokens[this.pos].value !== value) {
-			console.error(`В строке ${this.tokens[this.pos].row} ожидалось ${value}, но был получен: ${this.tokens[this.pos].value}`);
-			return false;
-		}
-
-		return true;
+	except(type, value) {
+		return this.predictType(type) && this.predictValue(value);
 	}
 
 	predictType(type) {
-		if (this.tokens[this.pos].type !== type) {
-			console.error(`В строке ${this.tokens[this.pos].row} ожидалось ${type}, но был получен: ${this.tokens[this.pos].type}`);
-			return false;
-		}
+		const temp = this.tokens[this.pos].type !== type;
 
-		return true;
+		if (!temp) console.error(`В строке ${this.tokens[this.pos].row} ожидался тип ${type}, но был получен: ${this.tokens[this.pos].type}`);
+
+		return temp;
+	}
+
+	predictValue(value) {
+		const temp = this.tokens[this.pos].value === value;
+
+		if (!temp) console.error(`В строке ${this.tokens[this.pos].row} ожидалось ${value}, но был получен: ${this.tokens[this.pos].value}`);
+
+		return temp;
 	}
 
 	init() {
-		//
+		const maxSteps = 50;
+		let step = 0;
+
+		while (!this.isEnd() && step < maxSteps) {
+			this.mainParse(this.ast);
+			++step;
+		}
+
+		console.log(this.ast.value);
 	}
 
-	mainParse() {}
+	mainParse(parent) {
+		const peek = this.peek();
+		const next = this.next();
+
+		if (['any', 'bool', 'int', 'float', 'string'] peek.type === ) this.parseLiteral(parent);
+	}
+
+	parseLiteral(parent) {
+		const literal = this.peek();
+
+		if (literal.value === literal.type) {
+			this.parseType(parent);
+			return;
+		}
+
+		this.pos++;
+
+		const obj = {
+			type: 'Literal',
+			value: literal.value
+		};
+
+		parent.value.push(obj);
+	}
+
+	parseType(parent) {
+		const type = this.peek();
+
+		this.pos++;
+
+		const obj = {
+			type: 'type',
+			value: type.value
+		};
+
+		parent.value.push(obj);
+	}
 }
 
 const code = `
 
-1+1
+int
 
 `;
 
