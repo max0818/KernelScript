@@ -82,8 +82,6 @@ class Parser {
 	parseType() {
 		const type = this.peek();
 
-		if (type.type !== type.value) return;
-
 		this.pos++;
 
 		const obj = {
