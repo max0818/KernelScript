@@ -11,5 +11,5 @@
 
 ### Массив в переменной
 ```ks
-var x: array
+var x: array = [1, true, '']
 ```
