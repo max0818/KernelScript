@@ -147,7 +147,7 @@ class Lexer {
 	}
 
 	isEnd() {
-		if (this.pos >= this.code.length) return true;
+		return this.pos >= this.code.length;
 	}
 
 	nextRow() {
