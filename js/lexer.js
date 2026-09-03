@@ -238,11 +238,9 @@ class Lexer {
 			this.pos++;
 		}
 
-		if (
-			Lexer.boolWords.includes(word) ||
-			Lexer.typeWords.includes(word) ||
-			Lexer.keyWords.includes(word)
-		) type = word;
+		if (Lexer.keyWords.includes(word)) type = word;
+		else if (Lexer.boolWords.includes(word)) type = 'bool';
+		else if (Lexer.typeWords.includes(word)) type = 'type';
 		else if (Lexer.valueWords.includes(word)) {
 			if (word === 'null') word = null;
 			else if (word === 'NaN') word = NaN;

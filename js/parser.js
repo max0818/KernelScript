@@ -44,10 +44,8 @@ class Parser {
 	}
 
 	init() {
-		const maxSteps = 50;
+		const maxSteps = 100;
 		let step = 0;
-
-		console.log(this.tokens);
 
 		while (!this.isEnd() && step < maxSteps) {
 			this.mainParse(this.ast);
@@ -106,7 +104,7 @@ class Parser {
 			value: null
 		};
 
-		if (!this.exceptType('identifier')) return;
+		this.exceptType('identifier');
 
 		this.pos++;
 		obj.name = this.peek().value;
@@ -114,7 +112,7 @@ class Parser {
 		this.pos++;
 
 		if (this.peek()?.type === ':') {
-			if (!Lexer.typeWords.includes(this.next()?.value)) {
+			if (this.next()?.type !== 'type') {
 				throw new Error(`На строке ${row} для ${obj.name} ожидался тип, но был получен: ${this.next()?.value}`);
 			}
 
