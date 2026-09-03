@@ -28,17 +28,17 @@ class Parser {
 	}
 
 	predictType(type) {
-		const temp = this.tokens[this.pos].type !== type;
+		const temp = this.next()?.type === type;
 
-		if (!temp) console.error(`В строке ${this.tokens[this.pos].row} ожидался тип ${type}, но был получен: ${this.tokens[this.pos].type}`);
+		if (!temp) throw new Error(`В строке ${this.next()?.row} ожидался тип ${type}, но был получен: ${this.next()?.type}`);
 
 		return temp;
 	}
 
 	predictValue(value) {
-		const temp = this.tokens[this.pos].value === value;
+		const temp = this.next()?.value === value;
 
-		if (!temp) console.error(`В строке ${this.tokens[this.pos].row} ожидалось ${value}, но был получен: ${this.tokens[this.pos].value}`);
+		if (!temp) throw new Error(`В строке ${this.next()?.row} ожидалось ${value}, но был получен: ${this.next()?.value}`);
 
 		return temp;
 	}
@@ -59,29 +59,30 @@ class Parser {
 		const peek = this.peek();
 		const next = this.next();
 
-		if (['any', 'bool', 'int', 'float', 'string'] peek.type === ) this.parseLiteral(parent);
+		// Указатель типа
+		if (['var', 'const'].includes(peek.type)) this.parseVar();
 	}
 
 	parseLiteral(parent) {
 		const literal = this.peek();
 
-		if (literal.value === literal.type) {
-			this.parseType(parent);
-			return;
-		}
+		if (literal.value === literal.type) return;
 
 		this.pos++;
 
 		const obj = {
 			type: 'Literal',
+			typeValue: literal.type,
 			value: literal.value
 		};
 
 		parent.value.push(obj);
 	}
 
-	parseType(parent) {
+	parseType() {
 		const type = this.peek();
+
+		if (type.type !== type.value) return;
 
 		this.pos++;
 
@@ -90,13 +91,27 @@ class Parser {
 			value: type.value
 		};
 
-		parent.value.push(obj);
+		return obj;
+	}
+
+	parseVar() {
+		const keyword = this.peek();
+		const obj = {
+			type: keyword,
+			typeVar: 'any',
+			name: null,
+			value: 'null'
+		};
+
+		if (!this.predictType('identifier')) return;
+
+		this.pos++;
 	}
 }
 
 const code = `
 
-int
+var x
 
 `;
 

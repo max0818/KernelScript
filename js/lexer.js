@@ -5,12 +5,8 @@ class Lexer {
 	static bitWorkSymbols = ['&', '|', '^', '~'];
 	static parenthesesSymbols = ['(', ')', '[', ']', '{', '}'];
 	static singleOperators = ['.', ',', ':', '?'];
-	static valueWords = [
-		// Логика
-		'true',
-		'false',
-
-		// Типы
+	static boolWords = ['true', 'false'];
+	static typeWords = [
 		'any',
 		'bool',
 		'int',
@@ -18,9 +14,9 @@ class Lexer {
 		'string',
 		'array',
 		'object',
-		'function',
-
-		// Неопределённые значения
+		'function'
+	];
+	static valueWords = [
 		'null',
 		'NaN',
 		'Infinity'
@@ -243,9 +239,15 @@ class Lexer {
 		}
 
 		if (
-			Lexer.valueWords.includes(word) ||
+			Lexer.boolWords.includes(word) ||
+			Lexer.typeWords.includes(word) ||
 			Lexer.keyWords.includes(word)
 		) type = word;
+		else if (Lexer.valueWords.includes(word)) {
+			if (word === 'null') word = null;
+			else if (word === 'NaN') word = NaN;
+			else if (word === 'Infinity') word = Infinity;
+		}
 
 		this.addToken(word, type, this.row);
 	}
