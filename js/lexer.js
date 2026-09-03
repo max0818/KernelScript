@@ -82,8 +82,6 @@ class Lexer {
 			this.mainChecker();
 			step++;
 		}
-
-		console.log(this.tokens);
 	}
 
 	// Главный метод
