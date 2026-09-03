@@ -50,3 +50,34 @@ print(add(2, 3, 4))
 
 */
 ```
+
+### Rest-параметр
+```ks
+flag Console
+flag Array
+
+fn max(...numbers: float): float {
+	if (numbers.size > 1) {
+		var temp: float = numbers[0]
+
+		var i: int = 1
+
+		while (i < numbers.size) {
+			if (numbers[i] > temp) {
+				temp = numbers[i]
+				++i
+			}
+		}
+
+		return temp
+	}
+}
+
+print(max(1, 543, 654, 94))
+
+/*
+Вывод консоли:
+654.0
+
+*/
+```
