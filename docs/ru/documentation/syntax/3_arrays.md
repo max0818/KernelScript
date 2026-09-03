@@ -16,15 +16,19 @@ var x: array = [1, true, 'text']
 
 ### Переменная с массивом с определённым типом значений
 ```ks
-var x: array<int> = [1, 2, 3]
+var x: array<int> = [1, 2, 3, 4, 5]
 ```
 
 ### Константа с массивом
 ```ks
-const x: array = [2.4, false, "Name"]
+const x: array = [2.4, false]
 ```
 
 ### Константа с массивом с определённым типом значений
 ```ks
-const x: array<string> = ["text1", 'text2', `text3`]
+const x: array<string> = [
+	"text1",
+	'text2',
+	`text3`
+]
 ```
