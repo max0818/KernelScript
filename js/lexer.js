@@ -57,6 +57,7 @@ class Lexer {
 		'init',
 		'extends',
 		'super',
+		'new',
 
 		// Флаги
 		'flag'
