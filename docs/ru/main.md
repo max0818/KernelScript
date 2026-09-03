@@ -13,7 +13,7 @@
 ## Документация
 
 - 📃 [Комментарии](documentation/syntax/0_comments.md)
-- 📃 [Операторы](documentation/syntax/1_operators.md)
+- 🧩 [Операторы](documentation/syntax/1_operators.md)
 - 📦 [Переменные](documentation/syntax/2_variables.md)
 - 📙 [Массивы](documentation/syntax/3_arrays.md)
 - 📚 [Объекты](documentation/syntax/4_objects.md)
