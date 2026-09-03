@@ -269,8 +269,6 @@ class Lexer {
 		this.pos++;
 		string += symbol;
 
-		//if (symbol === '`') type = 'nestString';
-
 		this.addToken(string, type, this.row);
 	}
 

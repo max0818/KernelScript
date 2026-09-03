@@ -24,10 +24,10 @@ class Parser {
 	}
 
 	except(type, value) {
-		return this.predictType(type) && this.predictValue(value);
+		return this.exceptType(type) && this.exceptValue(value);
 	}
 
-	predictType(type) {
+	exceptType(type) {
 		const temp = this.next()?.type === type;
 
 		if (!temp) throw new Error(`В строке ${this.next()?.row} ожидался тип ${type}, но был получен: ${this.next()?.type}`);
@@ -35,7 +35,7 @@ class Parser {
 		return temp;
 	}
 
-	predictValue(value) {
+	exceptValue(value) {
 		const temp = this.next()?.value === value;
 
 		if (!temp) throw new Error(`В строке ${this.next()?.row} ожидалось ${value}, но был получен: ${this.next()?.value}`);
@@ -46,6 +46,8 @@ class Parser {
 	init() {
 		const maxSteps = 50;
 		let step = 0;
+
+		console.log(this.tokens);
 
 		while (!this.isEnd() && step < maxSteps) {
 			this.mainParse(this.ast);
@@ -59,7 +61,7 @@ class Parser {
 		const peek = this.peek();
 		const next = this.next();
 
-		// Указатель типа
+		// Переменные
 		if (['var', 'const'].includes(peek.type)) this.parseVar();
 	}
 
@@ -96,22 +98,32 @@ class Parser {
 
 	parseVar() {
 		const keyword = this.peek();
+		const row = this.peek().row;
 		const obj = {
 			type: keyword,
 			typeVar: 'any',
 			name: null,
-			value: 'null'
+			value: null
 		};
 
-		if (!this.predictType('identifier')) return;
+		if (!this.exceptType('identifier')) return;
 
 		this.pos++;
+		obj.name = this.peek().value;
+
+		this.pos++;
+
+		if (this.peek()?.type === ':') {
+			if (!Lexer.typeWords.includes(this.next()?.value)) {
+				throw new Error(`На строке ${row} для ${obj.name} ожидался тип, но был получен: ${this.next()?.value}`);
+			}
+		}
 	}
 }
 
 const code = `
 
-var x
+var x: string = 'hui sosi'
 
 `;
 
