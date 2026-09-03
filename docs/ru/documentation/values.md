@@ -1,3 +1,5 @@
+[Назад](../main.md)
+
 # KernelScript
 ## Значения
 
