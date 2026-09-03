@@ -88,59 +88,59 @@ class Lexer {
 
 	// Главный метод
 	mainChecker() {
-		const current = this.current();
+		const peek = this.peek();
 		const next = this.next();
 
 		// Пропуск пробела
 		if (
-			current === ' ' ||
-			current === ';' ||
-			current === '\t'
+			peek === ' ' ||
+			peek === ';' ||
+			peek === '\t'
 		) this.pos++;
 
 		// Следующая строка
-		else if (current === '\n') this.nextRow();
+		else if (peek === '\n') this.nextRow();
 
 		// Однострочные комментарии
-		else if (current === '#') this.commentLineChecker();
+		else if (peek === '#') this.commentLineChecker();
 
 		// Многострочные комментарии
-		else if (current === '/' && next === '*') this.commentLinesChecker();
+		else if (peek === '/' && next === '*') this.commentLinesChecker();
 
 		// Числа иной системы счисления
 		else if (
-			current === '0' &&
+			peek === '0' &&
 			(next === 'b' || next === 'o' || next === 'x')
 		) this.differentNumberChecker();
 
 		// Числа
-		else if (current.match(/[0-9]+/)) this.numberChecker();
+		else if (peek.match(/[0-9]+/)) this.numberChecker();
 
 		// Идентификатор
-		else if (current.match(/[A-Za-z]+/)) this.wordChecker();
+		else if (peek.match(/[A-Za-z]+/)) this.wordChecker();
 
 		// Строки
-		else if (Lexer.stringSymbols.includes(current)) this.stringChecker();
+		else if (Lexer.stringSymbols.includes(peek)) this.stringChecker();
 
 		// Арифметика
-		else if (Lexer.arithmeticSymbols.includes(current)) this.arithmeticSymbolsChecker();
+		else if (Lexer.arithmeticSymbols.includes(peek)) this.arithmeticSymbolsChecker();
 
 		// Битовые операции
-		else if (Lexer.bitWorkSymbols.includes(current)) this.bitWorkChecker();
+		else if (Lexer.bitWorkSymbols.includes(peek)) this.bitWorkChecker();
 
 		// Сравнение
-		else if (Lexer.comparisonSymbols.includes(current)) this.comparisonChecker();
+		else if (Lexer.comparisonSymbols.includes(peek)) this.comparisonChecker();
 
 		// Одиночные символы
 		else if (
-			Lexer.parenthesesSymbols.includes(current) ||
-			Lexer.singleOperators.includes(current)
+			Lexer.parenthesesSymbols.includes(peek) ||
+			Lexer.singleOperators.includes(peek)
 		) this.singleSymbolsChecker();
 	}
 
 	// Вспомогательные методы
 
-	current() {
+	peek() {
 		return this.code[this.pos];
 	}
 
@@ -168,7 +168,7 @@ class Lexer {
 	// Комментарии
 
 	commentLineChecker() {
-		while (!this.isEnd() && this.current() !== '\n') {
+		while (!this.isEnd() && this.peek() !== '\n') {
 			this.pos++;
 		}
 	}
@@ -176,7 +176,7 @@ class Lexer {
 	commentLinesChecker() {
 		this.pos += 2;
 
-		while (!this.isEnd() && !(this.current() === '*' && this.next() === '/')) {
+		while (!this.isEnd() && !(this.peek() === '*' && this.next() === '/')) {
 			this.pos++;
 		}
 
@@ -187,13 +187,13 @@ class Lexer {
 
 	differentNumberChecker() {
 		const next = this.next();
-		let number = this.current() + this.next();
+		let number = this.peek() + this.next();
 		let type = 'number';
 
 		this.pos += 2;
 
-		while (!this.isEnd() && this.current().match(this.differentNumberCheckerComp(next))) {
-			number += this.current();
+		while (!this.isEnd() && this.peek().match(this.differentNumberCheckerComp(next))) {
+			number += this.peek();
 			this.pos++;
 		}
 
@@ -209,23 +209,23 @@ class Lexer {
 	}
 
 	numberChecker() {
-		let number = this.current();
+		let number = this.peek();
 		let type = 'int';
 
 		this.pos++;
 
-		while (!this.isEnd() && this.current().match(/[0-9]+/)) {
-			number += this.current();
+		while (!this.isEnd() && this.peek().match(/[0-9]+/)) {
+			number += this.peek();
 			this.pos++;
 		}
 
-		if (this.current() === '.') {
+		if (this.peek() === '.') {
 			number += '.';
 			type = 'float';
 			this.pos++;
 
-			while (!this.isEnd() && this.current().match(/[0-9]+/)) {
-				number += this.current();
+			while (!this.isEnd() && this.peek().match(/[0-9]+/)) {
+				number += this.peek();
 				this.pos++;
 			}
 		}
@@ -241,8 +241,8 @@ class Lexer {
 		let word = '';
 		let type = 'identifier';
 
-		while (!this.isEnd() && this.current().match(/[A-Za-z0-9]+/)) {
-			word += this.current();
+		while (!this.isEnd() && this.peek().match(/[A-Za-z0-9]+/)) {
+			word += this.peek();
 			this.pos++;
 		}
 
@@ -257,14 +257,14 @@ class Lexer {
 	// Строка
 
 	stringChecker() {
-		const symbol = this.current();
+		const symbol = this.peek();
 		let string = symbol;
 		let type = 'string';
 
 		this.pos++;
 
-		while (!this.isEnd() && this.current() !== symbol) {
-			string += this.current();
+		while (!this.isEnd() && this.peek() !== symbol) {
+			string += this.peek();
 			this.pos++;
 		}
 
@@ -279,21 +279,21 @@ class Lexer {
 	// Операторы
 
 	arithmeticSymbolsChecker() {
-		let operator = this.current();
+		let operator = this.peek();
 
 		this.pos++;
 
-		if (['+', '-', '*'].includes(this.current()) && this.current() === operator) {
-			operator += this.current();
+		if (['+', '-', '*'].includes(this.peek()) && this.peek() === operator) {
+			operator += this.peek();
 
-			if (this.current() === '*' && this.next() === '=') {
+			if (this.peek() === '*' && this.next() === '=') {
 				operator += this.next();
 				this.pos += 2;
 			}
 
 			this.pos++;
-		} else if (this.current() === '=') {
-			operator += this.current();
+		} else if (this.peek() === '=') {
+			operator += this.peek();
 			this.pos++;
 		}
 
@@ -301,28 +301,28 @@ class Lexer {
 	}
 
 	bitWorkChecker() {
-		let operator = this.current();
+		let operator = this.peek();
 		this.pos++;
 		this.addToken(operator, operator, this.row);
 	}
 
 	comparisonChecker() {
-		let operator = this.current();
+		let operator = this.peek();
 
 		this.pos++;
 
-		if (operator === '=' && this.current() === '=') {
+		if (operator === '=' && this.peek() === '=') {
 			operator += '=';
 			this.pos++;
 		} else if (operator !== '=') {
-			if (this.current() === '=') {
+			if (this.peek() === '=') {
 				operator += '=';
 				this.pos++;
 			} else if (
 				['<', '>'].includes(operator) &&
-				operator === this.current()
+				operator === this.peek()
 			) {
-				operator += this.current();
+				operator += this.peek();
 				this.pos++;
 			}
 		}
@@ -333,11 +333,11 @@ class Lexer {
 	// Скобки и иные одиночные символы
 
 	singleSymbolsChecker() {
-		let symbol = this.current();
+		let symbol = this.peek();
 
 		this.pos++;
 
-		if (symbol === '.' && this.current() === '.' && this.next() === '.') {
+		if (symbol === '.' && this.peek() === '.' && this.next() === '.') {
 			symbol += '..';
 			this.pos += 2;
 		}
