@@ -62,7 +62,7 @@ class Parser {
 		const next = this.next();
 
 		// Переменные
-		if (['var', 'const'].includes(peek.type)) this.parseVar();
+		if (['var', 'const'].includes(peek.type)) this.parseVar(parent);
 	}
 
 	parseLiteral(parent) {
@@ -96,7 +96,7 @@ class Parser {
 		return obj;
 	}
 
-	parseVar() {
+	parseVar(parent) {
 		const keyword = this.peek();
 		const row = this.peek().row;
 		const obj = {
@@ -117,7 +117,18 @@ class Parser {
 			if (!Lexer.typeWords.includes(this.next()?.value)) {
 				throw new Error(`На строке ${row} для ${obj.name} ожидался тип, но был получен: ${this.next()?.value}`);
 			}
+
+			obj.type = this.next().value;
+
+			this.pos += 2;
 		}
+
+		if (this.peek()?.type === '=') {
+			this.pos++;
+			this.mainParse(obj);
+		}
+
+		parent.value.push(obj);
 	}
 }
 
