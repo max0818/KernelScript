@@ -41,6 +41,10 @@ class Parser {
 		return true;
 	}
 
+	init() {
+		//
+	}
+
 	mainParse() {}
 }
 

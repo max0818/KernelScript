@@ -76,11 +76,8 @@ class Lexer {
 
 	// Инициализация лексера
 	init() {
-		let maxSteps = 1000;
-		let step = 0;
-		while (!this.isEnd() && step < maxSteps) {
+		while (!this.isEnd()) {
 			this.mainChecker();
-			step++;
 		}
 	}
 
