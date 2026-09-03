@@ -40,4 +40,19 @@ var переменная: function = функция(аргументы)
 
 ## Примеры
 
+### Функция с формулой
+```ks
+flag Console
 
+fn add(a: int, b: int, c: float): float {
+	return a * b / c
+}
+
+print(add(2, 3, 4))
+
+/*
+Вывод в консоль:
+1.5
+
+*/
+```
