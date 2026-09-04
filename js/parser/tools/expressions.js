@@ -382,7 +382,37 @@ class ParserExpressions extends ParserBase {
 	}
 
 	// Массив
-	parseArray() {}
+	parseArray() {
+		if (this.peek()?.type !== '[') {
+			this.error(`В строке ${this.peek()?.row} ожидалось "[", но был получен: ${this.peek()?.value}`);
+		}
+
+		ParserPosManager.pos++;
+
+		const elements = [];
+
+		if (this.peek()?.type !== ']') {
+			while (!this.isEnd()) {
+				const element = this.parseExpression();
+				elements.push(element);
+
+				if (this.peek()?.type === ',') {
+					ParserPosManager.pos++;
+					continue;
+				}
+
+				break;
+			}
+		}
+
+		if (this.peek()?.type !== ']') {
+			this.error(`В строке ${this.peek()?.row} ожидалось "]", но был получен: ${this.peek()?.value}`);
+		}
+
+		ParserPosManager.pos++;
+
+		return {type: 'ArrayExpression', elements};
+	}
 
 	// Объект
 	parseObject() {}

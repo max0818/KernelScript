@@ -37,7 +37,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-f.y(0x4)
+
 
 `;
 
