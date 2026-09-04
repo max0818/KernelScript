@@ -234,12 +234,8 @@ class ParserExpressions extends ParserBase {
 
 		// Идентификатор
 		if (peek.type === 'identifier') {
-			const name = peek.value;
-
 			ParserPosManager.pos++;
-
-			const expr = {type: 'Identifier', name};
-
+			const expr = {type: 'Identifier', name: peek.value};
 			return this.parseCall(expr);
 		}
 
@@ -264,17 +260,25 @@ class ParserExpressions extends ParserBase {
 
 			ParserPosManager.pos++;
 
-			return expr;
+			return this.parseCall(expr);
 		}
 
 		// Массив
 		if (peek.type === '[') {
-			return this.parseArray();
+			const expr = this.parseArray();
+			return this.parseCall(expr);
 		}
 
 		// Объект
 		if (peek.type === '{') {
-			return this.parseObject();
+			const expr = this.parseObject();
+			return this.parseCall(expr);
+		}
+
+		// Создание экземпляра класса
+		if (peek.type === 'new') {
+			const expr = this.parseNew();
+			return this.parseCall(expr);
 		}
 
 		this.error(`Неожиданный токен на строке ${peek.row}: ${peek.value} (${peek.type})`);
@@ -295,7 +299,7 @@ class ParserExpressions extends ParserBase {
 				const args = [];
 				if (this.peek()?.type !== ')') {
 					while (!this.isEnd()) {
-						args.push(this.parseExponentiation());
+						args.push(this.parseExpression());
 
 						if (this.peek()?.type === ',') {
 							ParserPosManager.pos++;
@@ -319,44 +323,9 @@ class ParserExpressions extends ParserBase {
 				continue;
 			}
 
-			// Обращение к полям объектов
-			if (peek.type === '.') {
-				ParserPosManager.pos++;
-
-				const prop = this.peek();
-				if (prop.type !== 'identifier') {
-					this.error(`В строке ${prop?.row} ожидалось имя свойства, но был получен: ${prop?.value}`);
-				}
-				ParserPosManager.pos++;
-
-				expr = {
-					type: 'MemberExpression',
-					object: expr,
-					property: {
-						type: 'Identifier',
-						name: prop.value
-					},
-					computed: false
-				};
-				continue;
-			}
-
-			// Обращение по индексу к массивам
-			if (peek.type === '[') {
-				ParserPosManager.pos++;
-
-				const index = this.parseExpression();
-				if (this.peek()?.type !== ']') {
-					this.error(`В строке ${this.peek()?.row} ожидалось "]", но был получен: ${this.peek()?.value}`);
-				}
-				ParserPosManager.pos++;
-
-				expr = {
-					type: 'MemberExpression',
-					object: expr,
-					property: index,
-					computed: true
-				};
+			// Обращение к свойству или элементу
+			if (peek.type === '.' || peek.type === '[') {
+				expr = this.parseMember(expr);
 				continue;
 			}
 
@@ -366,8 +335,51 @@ class ParserExpressions extends ParserBase {
 		return expr;
 	}
 
-	// Обращение к полю, или значению по индексу
-	parseMember() {}
+	// Обращение к свойству или элементу
+	parseMember(expr) {
+		const peek = this.peek();
+
+		// Поля и объекты
+		if (peek.type === '.') {
+			ParserPosManager.pos++;
+
+			const prop = this.peek();
+			if (prop?.type !== 'identifier') {
+				this.error(`В строке ${prop?.row} ожидалось имя свойства, но был получен: ${prop?.row}`);
+			}
+			this.pos++;
+
+			return {
+				type: 'MemberExpression',
+				object: expr,
+				property: {
+					type: 'Identifier',
+					name: prop.value
+				},
+				computed: false
+			};
+		}
+
+		// Значения и массивы
+		if (peek.type === '[') {
+			ParserPosManager.pos++;
+
+			const index = this.parseExpression();
+			if (this.peek()?.type !== ']') {
+				this.error(`В строке ${this.peek()?.row} ожидалось "]", но был получен: ${this.peek()?.value}`);
+			}
+			this.pos++;
+
+			return {
+				type: 'MemberExpression',
+				object: expr,
+				property: index,
+				computed: true
+			};
+		}
+
+		this.error(`В строке ${peek?.row} ожидался "]", но был получен: ${peek?.row}`);
+	}
 
 	// Массив
 	parseArray() {}
@@ -377,4 +389,7 @@ class ParserExpressions extends ParserBase {
 
 	// Скобки
 	parseGroup() {}
+
+	// Создание экземпляров классов
+	parseNew() {}
 }
