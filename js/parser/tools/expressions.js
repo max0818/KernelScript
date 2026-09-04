@@ -21,9 +21,9 @@ class ParserExpressions extends ParserBase {
 
 			return {
 				type: 'AssignmentExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -42,9 +42,9 @@ class ParserExpressions extends ParserBase {
 			const alternate = this.parseConditional();
 			return {
 				type: 'TernaryExpression',
-				condition: condition,
-				consequent: consequent,
-				alternate: alternate
+				condition,
+				consequent,
+				alternate
 			};
 		}
 
@@ -63,9 +63,9 @@ class ParserExpressions extends ParserBase {
 
 			left = {
 				type: 'BinaryExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -83,9 +83,9 @@ class ParserExpressions extends ParserBase {
 
 			left = {
 				type: 'BinaryExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -104,9 +104,9 @@ class ParserExpressions extends ParserBase {
 
 			left = {
 				type: 'BinaryExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -124,9 +124,9 @@ class ParserExpressions extends ParserBase {
 
 			left = {
 				type: 'BinaryExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -145,9 +145,9 @@ class ParserExpressions extends ParserBase {
 
 			left = {
 				type: 'BinaryExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -165,9 +165,9 @@ class ParserExpressions extends ParserBase {
 
 			left = {
 				type: 'BinaryExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -186,9 +186,9 @@ class ParserExpressions extends ParserBase {
 
 			return {
 				type: 'BinaryExpression',
-				operator: operator,
-				left: left,
-				right: right
+				operator,
+				left,
+				right
 			};
 		}
 
@@ -205,8 +205,8 @@ class ParserExpressions extends ParserBase {
 
 			return {
 				type: 'UnaryExpression',
-				operator: operator,
-				argument: argument,
+				operator,
+				argument,
 				prefix: true
 			};
 		}
