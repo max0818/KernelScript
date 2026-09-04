@@ -339,10 +339,29 @@ class ParserExpressions extends ParserBase {
 				continue;
 			}
 
+			// Обращение по индексу к массивам
 			if (peek.type === '[') {
-				//
+				ParserPosManager.pos++;
+
+				const index = this.parseExpression();
+				if (this.peek()?.type !== ']') {
+					this.error(`В строке ${this.peek()?.row} ожидалось "]", но был получен: ${this.peek()?.value}`);
+				}
+				ParserPosManager.pos++;
+
+				expr = {
+					type: 'MemberExpression',
+					object: expr,
+					property: index,
+					computed: true
+				};
+				continue;
 			}
+
+			break;
 		}
+
+		return expr;
 	}
 
 	// Обращение к полю, или значению по индексу
