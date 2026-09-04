@@ -1,19 +1,4 @@
 class Parser {
-
-	
-
-	init() {
-		const maxSteps = 100;
-		let step = 0;
-
-		while (!this.isEnd() && step < maxSteps) {
-			this.mainParse(this.ast);
-			++step;
-		}
-
-		console.log(this.ast.value);
-	}
-
 	mainParse(parent) {
 		const peek = this.peek();
 		const next = this.next();
@@ -86,11 +71,5 @@ class Parser {
 		parent.value.push(obj);
 	}
 }
-
-const code = `
-
-var x: string = 'hui sosi'
-
-`;
 
 new Parser(code);

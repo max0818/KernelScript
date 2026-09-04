@@ -25,7 +25,7 @@ class ParserPosManager {
 	static expectType(type) {
 		const temp = this.next()?.type === type;
 
-		if (!temp) this.error(`В строке ${this.next()?.row} ожидался тип ${type}, но был получен: ${this.next()?.type}`);
+		if (!temp) this.error(`В строке ${this.peek()?.row} ожидался тип ${type}, но был получен: ${this.next()?.type}`);
 
 		return temp;
 	}
@@ -33,7 +33,7 @@ class ParserPosManager {
 	static expectValue(value) {
 		const temp = this.next()?.value === value;
 
-		if (!temp) this.error(`В строке ${this.next()?.row} ожидалось ${value}, но был получен: ${this.next()?.value}`);
+		if (!temp) this.error(`В строке ${this.peek()?.row} ожидалось ${value}, но был получен: ${this.next()?.value}`);
 
 		return temp;
 	}
