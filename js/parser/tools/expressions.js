@@ -20,7 +20,7 @@ class ParserExpressions extends ParserBase {
 			const right = this.parseAssignment();
 
 			return {
-				type: 'Assignment',
+				type: 'AssignmentExpression',
 				operator: operator,
 				left: left,
 				right: right
@@ -41,7 +41,7 @@ class ParserExpressions extends ParserBase {
 			this.pos++;
 			const alternate = this.parseConditional();
 			return {
-				type: 'Ternary',
+				type: 'TernaryExpression',
 				condition: condition,
 				consequent: consequent,
 				alternate: alternate
@@ -62,7 +62,7 @@ class ParserExpressions extends ParserBase {
 			const right = this.parseAnd();
 
 			left = {
-				type: 'Binary',
+				type: 'BinaryExpression',
 				operator: operator,
 				left: left,
 				right: right
@@ -82,7 +82,7 @@ class ParserExpressions extends ParserBase {
 			const right = this.parseEquality();
 
 			left = {
-				type: 'Binary',
+				type: 'BinaryExpression',
 				operator: operator,
 				left: left,
 				right: right
@@ -93,9 +93,45 @@ class ParserExpressions extends ParserBase {
 	}
 
 	// Сравнение
-	parseEquality() {}
+	parseEquality() {
+		let left = this.parseComparison();
 
-	parseComparison() {}
+		while (!this.isEnd() && ['==', '!='].includes(this.peek().type)) {
+			const operator = this.peek()?.value;
+			this.pos++;
+
+			const right = this.parseComparison();
+
+			left = {
+				type: 'BinaryExpression',
+				operator: operator,
+				left: left,
+				right: right
+			};
+		}
+
+		return left;
+	}
+
+	parseComparison() {
+		let left = this.parseAdditive();
+
+		while (!this.isEnd() && ['<', '>', '<=', '>='].includes(this.peek().type)) {
+			const operator = this.peek()?.value;
+			this.pos++;
+
+			const right = this.parseAdditive();
+
+			left = {
+				type: 'BinaryExpression',
+				operator: operator,
+				left: left,
+				right: right
+			};
+		}
+
+		return left;
+	}
 
 	// Арифметика
 	parseAdditive() {}
@@ -114,7 +150,7 @@ class ParserExpressions extends ParserBase {
 			const argument = this.parseUnary();
 
 			return {
-				type: 'Unary',
+				type: 'UnaryExpression',
 				operator: operator,
 				argument: argument,
 				prefix: true
@@ -154,13 +190,13 @@ class ParserExpressions extends ParserBase {
 		// This
 		if (peek.type === 'this') {
 			this.pos++;
-			return {type: 'This'}
+			return {type: 'ThisExpression'}
 		}
 
 		// Super
 		if (peek.type === 'super') {
 			this.pos++;
-			return {type: 'Super'}
+			return {type: 'SuperExpression'}
 		}
 
 		// Группа
