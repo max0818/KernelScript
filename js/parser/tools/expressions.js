@@ -415,7 +415,58 @@ class ParserExpressions extends ParserBase {
 	}
 
 	// Объект
-	parseObject() {}
+	parseObject() {
+		if (this.peek()?.type !== '{') {
+			this.error(`В строке ${this.peek()?.row} ожидалось "{", но был получен: ${this.peek()?.value}`);
+		}
+
+		ParserPosManager.pos++;
+
+		const properties = [];
+
+		if (this.peek()?.type !== '}') {
+			while (!this.isEnd()) {
+				const peek = this.peek();
+				if (peek?.type !== 'identifier' && peek?.type !== 'string') {
+					this.error(`В строке ${peek?.row} ожидался ключ (идентификатор или строка), но был получен: ${peek?.value}`);
+				}
+
+				const key = peek.value;
+				ParserPosManager.pos++;
+
+				if (this.peek()?.type !== ':') {
+					this.error(`В строке ${this.peek()?.row} ожидалось ":", но был получен: ${this.peek()?.value}`);
+				}
+				ParserPosManager.pos++;
+
+				const value = this.parseExpression();
+
+				properties.push({
+					type: 'ObjectProperty',
+					key,
+					value
+				});
+
+				if (this.peek()?.type === ',') {
+					ParserPosManager.pos++;
+					continue;
+				}
+
+				break;
+			}
+
+			if (this.peek()?.type !== '}') {
+				this.error(`В строку ${this.peek()?.row} ожидалось "}", но был получен: ${this.peek()?.value}`);
+			}
+
+			ParserPosManager.pos++;
+
+			return {
+				type: 'ObjectExpression',
+				properties
+			};
+		}
+	}
 
 	// Скобки
 	parseGroup() {}

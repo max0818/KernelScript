@@ -27,17 +27,22 @@ class Parser extends ParserBase {
 			++step;
 		}
 
-		console.log(this.ast.value);
+		console.log(JSON.stringify(this.ast.value, null, 2));
 	}
 
 	parse(parent) {
-		console.log(JSON.stringify(this.expressions.parseExpression(), null, 2));
+		parent.value.push(this.expressions.parseExpression());
 	}
 }
 
 const code = `
 
-
+{
+	name: 'f',
+	'max': {
+		'lol': 5
+	}
+}
 
 `;
 
