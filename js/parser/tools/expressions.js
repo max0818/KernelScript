@@ -234,11 +234,13 @@ class ParserExpressions extends ParserBase {
 
 		// Идентификатор
 		if (peek.type === 'identifier') {
+			const name = peek.value;
+
 			ParserPosManager.pos++;
-			return {
-				type: 'Identifier',
-				name: peek.value
-			}
+
+			const expr = {type: 'Identifier', name};
+
+			return this.parseCall(expr);
 		}
 
 		// This
