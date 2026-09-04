@@ -180,7 +180,7 @@ class Lexer {
 	differentNumberChecker() {
 		const next = this.next();
 		let number = this.peek() + this.next();
-		let type = 'number';
+		let type = 'int';
 
 		this.pos += 2;
 
