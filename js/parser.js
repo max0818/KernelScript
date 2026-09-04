@@ -63,6 +63,8 @@ class Parser {
 		if (['var', 'const'].includes(peek.type)) this.parseVar(parent);
 	}
 
+	parse() {}
+
 	parseLiteral(parent) {
 		const literal = this.peek();
 
