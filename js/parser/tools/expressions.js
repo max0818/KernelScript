@@ -454,18 +454,18 @@ class ParserExpressions extends ParserBase {
 
 				break;
 			}
-
-			if (this.peek()?.type !== '}') {
-				this.error(`В строку ${this.peek()?.row} ожидалось "}", но был получен: ${this.peek()?.value}`);
-			}
-
-			ParserPosManager.pos++;
-
-			return {
-				type: 'ObjectExpression',
-				properties
-			};
 		}
+
+		if (this.peek()?.type !== '}') {
+			this.error(`В строку ${this.peek()?.row} ожидалось "}", но был получен: ${this.peek()?.value}`);
+		}
+
+		ParserPosManager.pos++;
+
+		return {
+			type: 'ObjectExpression',
+			properties
+		};
 	}
 
 	// Скобки

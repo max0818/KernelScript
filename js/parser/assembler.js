@@ -37,12 +37,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-{
-	name: 'f',
-	'max': {
-		'lol': 5
-	}
-}
+{}
 
 `;
 
