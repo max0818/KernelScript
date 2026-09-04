@@ -75,4 +75,12 @@ class ParserBase {
 	error(message) {
 		return ParserPosManager.error(message);
 	}
+
+	set pos(number) {
+		ParserPosManager.pos += number;
+	}
+
+	get pos() {
+		return ParserPosManager.pos;
+	}
 }

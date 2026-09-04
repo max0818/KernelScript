@@ -18,7 +18,7 @@ class Parser extends ParserBase {
 			++step;
 		}
 
-		console.log(this.ast.value);
+		console.log(this.ast.value, );
 	}
 }
 
