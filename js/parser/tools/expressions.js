@@ -246,13 +246,13 @@ class ParserExpressions extends ParserBase {
 		// This
 		if (peek.type === 'this') {
 			ParserPosManager.pos++;
-			return {type: 'ThisExpression'}
+			return this.parseCall({type: 'ThisExpression'});
 		}
 
 		// Super
 		if (peek.type === 'super') {
 			ParserPosManager.pos++;
-			return {type: 'SuperExpression'}
+			return this.parseCall({type: 'SuperExpression'});
 		}
 
 		// Группа
