@@ -1,16 +1,24 @@
 class Parser extends ParserBase {
 	ast = {
+		type: 'program',
 		value: []
 	}
 
 	constructor(code) {
 		super();
+
 		ParserPosManager.init(new Lexer(code).tokens);
 
 		this.init();
 	}
 
+	initAllComps() {
+		this.expressions = new ParserExpressions();
+	}
+
 	init() {
+		this.initAllComps();
+
 		const maxSteps = 1;
 		let step = 0;
 
@@ -18,7 +26,7 @@ class Parser extends ParserBase {
 			++step;
 		}
 
-		console.log(this.ast.value, );
+		console.log(this.ast.value);
 	}
 }
 
