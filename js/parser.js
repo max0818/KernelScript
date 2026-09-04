@@ -61,7 +61,7 @@ class Parser {
 			value: null
 		};
 
-		this.exceptType('identifier');
+		this.expectType('identifier');
 
 		this.pos++;
 		obj.name = this.peek().value;

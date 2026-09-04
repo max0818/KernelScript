@@ -65,7 +65,7 @@ class ParserBase {
 	expect(type, value) {
 		return ParserPosManager.expect(type, value);
 	}
-	exceptType(type) {
+	expectType(type) {
 		return ParserPosManager.expectType(type);
 	}
 	expectValue(value) {
