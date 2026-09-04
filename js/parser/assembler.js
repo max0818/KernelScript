@@ -7,7 +7,11 @@ class Parser extends ParserBase {
 	constructor(code) {
 		super();
 
-		ParserPosManager.init(new Lexer(code).tokens);
+		const temp = new Lexer(code).tokens;
+
+		ParserPosManager.init(temp);
+
+		console.log(temp);
 
 		this.init();
 	}
@@ -26,7 +30,6 @@ class Parser extends ParserBase {
 			this.parse(this.ast);
 			++step;
 		}
-
 		console.log(this.ast.value);
 	}
 

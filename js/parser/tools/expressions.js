@@ -32,10 +32,32 @@ class ParserExpressions extends ParserBase {
 	parseExponentiation() {}
 
 	// Унарные операторы
-	parseUnary() {}
+	parseUnary() {
+		if (!this.isEnd() && ['not', '-', '++', '--', '~'].includes(this.peek().type)) {
+			const operator = this.peek().value;
+			this.pos++;
+
+			const argument = this.parseUnary();
+
+			return {
+				type: 'Unary',
+				operator: operator,
+				argument: argument,
+				prefix: true
+			}
+		}
+
+		return this.parsePrimary();
+	}
 
 	// Первичные выражения
-	parsePrimary() {}
+	parsePrimary() {
+		const peek = this.peek();
+
+		if (!peek) this.error('Неожиданный конец кода');
+
+		//
+	}
 
 
 	// Вспомогательные методы

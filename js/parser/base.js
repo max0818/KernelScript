@@ -4,6 +4,10 @@ class ParserPosManager {
 
 	// Работа с позицией
 
+	static back() {
+		return this.tokens[this.pos - 1];
+	}
+
 	static peek() {
 		return this.tokens[this.pos];
 	}
@@ -58,6 +62,7 @@ class ParserPosManager {
 }
 
 class ParserBase {
+	back() {return ParserPosManager.back()}
 	peek() {return ParserPosManager.peek()}
 	next() {return ParserPosManager.next()}
 	isEnd() {return ParserPosManager.isEnd()}
