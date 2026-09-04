@@ -347,7 +347,7 @@ class ParserExpressions extends ParserBase {
 			if (prop?.type !== 'identifier') {
 				this.error(`В строке ${prop?.row} ожидалось имя свойства, но был получен: ${prop?.row}`);
 			}
-			this.pos++;
+			ParserPosManager.pos++;
 
 			return {
 				type: 'MemberExpression',
@@ -368,7 +368,7 @@ class ParserExpressions extends ParserBase {
 			if (this.peek()?.type !== ']') {
 				this.error(`В строке ${this.peek()?.row} ожидалось "]", но был получен: ${this.peek()?.value}`);
 			}
-			this.pos++;
+			ParserPosManager.pos++;
 
 			return {
 				type: 'MemberExpression',
