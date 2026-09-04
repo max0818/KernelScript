@@ -23,14 +23,14 @@ class Parser extends ParserBase {
 		let step = 0;
 
 		while (!this.isEnd() && step < maxSteps) {
-			this.parseProgram(this.ast);
+			this.parse(this.ast);
 			++step;
 		}
 
 		console.log(this.ast.value);
 	}
 
-	parseProgram(parent) {
+	parse(parent) {
 		//
 	}
 }
