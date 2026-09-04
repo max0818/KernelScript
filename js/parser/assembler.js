@@ -24,7 +24,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-var x: string = 'hui sosi'
+var x: string = 'Просто строка, без матов'
 
 `;
 
