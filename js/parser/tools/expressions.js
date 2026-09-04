@@ -134,12 +134,66 @@ class ParserExpressions extends ParserBase {
 	}
 
 	// Арифметика
-	parseAdditive() {}
+	parseAdditive() {
+		let left = this.parseMultiplicative();
 
-	parseMultiplicative() {}
+		while (!this.isEnd() && ['+', '-'].includes(this.peek().type)) {
+			const operator = this.peek().value;
+			this.pos++;
+
+			const right = this.parseMultiplicative();
+
+			left = {
+				type: 'BinaryExpression',
+				operator: operator,
+				left: left,
+				right: right
+			};
+		}
+
+		return left;
+	}
+
+	parseMultiplicative() {
+		let left = this.parseExponentiation();
+
+		while (!this.isEnd() && ['*', '/', '%'].includes(this.peek().type)) {
+			const operator = this.peek().value;
+			this.pos++;
+
+			const right = this.parseExponentiation();
+
+			left = {
+				type: 'BinaryExpression',
+				operator: operator,
+				left: left,
+				right: right
+			};
+		}
+
+		return left;
+	}
 
 	// Возведение в степень
-	parseExponentiation() {}
+	parseExponentiation() {
+		let left = this.parseUnary();
+
+		while (!this.isEnd() && this.peek().type === '**') {
+			const operator = this.peek().value;
+			this.pos++;
+
+			const right = this.parseExponentiation();
+
+			return {
+				type: 'BinaryExpression',
+				operator: operator,
+				left: left,
+				right: right
+			};
+		}
+
+		return left;
+	}
 
 	// Унарные операторы
 	parseUnary() {
