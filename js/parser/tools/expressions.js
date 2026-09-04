@@ -282,7 +282,68 @@ class ParserExpressions extends ParserBase {
 	// Вспомогательные методы
 
 	// Вызов функции
-	parseCall() {}
+	parseCall(expr) {
+		while (!this.isEnd()) {
+			const peek = this.peek();
+
+			// Вызова функции
+			if (peek.type === '(') {
+				ParserPosManager.pos++;
+
+				const args = [];
+				if (this.peek()?.type !== ')') {
+					while (!this.isEnd()) {
+						args.push(this.parseExponentiation());
+
+						if (this.peek()?.type === ',') {
+							ParserPosManager.pos++;
+							continue;
+						}
+
+						break;
+					}
+				}
+
+				if (this.peek()?.type !== ')') {
+					this.error(`В строке ${this.peek()?.row} ожидалось ")", но был получен: ${this.peek()?.value}`);
+				}
+				ParserPosManager.pos++;
+
+				expr = {
+					type: 'CallExpression',
+					callee: expr,
+					arguments: args
+				};
+				continue;
+			}
+
+			// Обращение к полям объектов
+			if (peek.type === '.') {
+				ParserPosManager.pos++;
+
+				const prop = this.peek();
+				if (prop.type !== 'identifier') {
+					this.error(`В строке ${prop?.row} ожидалось имя свойства, но был получен: ${prop?.value}`);
+				}
+				ParserPosManager.pos++;
+
+				expr = {
+					type: 'MemberExpression',
+					object: expr,
+					property: {
+						type: 'Identifier',
+						name: prop.value
+					},
+					computed: false
+				};
+				continue;
+			}
+
+			if (peek.type === '[') {
+				//
+			}
+		}
+	}
 
 	// Обращение к полю, или значению по индексу
 	parseMember() {}
