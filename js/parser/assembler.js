@@ -9,24 +9,29 @@ class Parser extends ParserBase {
 
 		ParserPosManager.init(new Lexer(code).tokens);
 
-		this.parseProgram();
+		this.init();
 	}
 
 	initAllComps() {
 		this.expressions = new ParserExpressions();
 	}
 
-	parseProgram() {
+	init() {
 		this.initAllComps();
 
-		const maxSteps = 1;
+		const maxSteps = 100;
 		let step = 0;
 
 		while (!this.isEnd() && step < maxSteps) {
+			this.parseProgram(this.ast);
 			++step;
 		}
 
 		console.log(this.ast.value);
+	}
+
+	parseProgram(parent) {
+		//
 	}
 }
 
