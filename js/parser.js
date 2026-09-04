@@ -1,47 +1,6 @@
 class Parser {
-	pos = 0;
 
-	ast = {
-		value: []
-	}
-
-	constructor(code) {
-		this.tokens = new Lexer(code).tokens;
-
-		this.init();
-	}
-
-	peek() {
-		return this.tokens[this.pos];
-	}
-
-	next() {
-		return this.tokens[this.pos + 1];
-	}
-
-	isEnd() {
-		return this.pos >= this.tokens.length;
-	}
-
-	except(type, value) {
-		return this.exceptType(type) && this.exceptValue(value);
-	}
-
-	exceptType(type) {
-		const temp = this.next()?.type === type;
-
-		if (!temp) throw new Error(`В строке ${this.next()?.row} ожидался тип ${type}, но был получен: ${this.next()?.type}`);
-
-		return temp;
-	}
-
-	exceptValue(value) {
-		const temp = this.next()?.value === value;
-
-		if (!temp) throw new Error(`В строке ${this.next()?.row} ожидалось ${value}, но был получен: ${this.next()?.value}`);
-
-		return temp;
-	}
+	
 
 	init() {
 		const maxSteps = 100;
@@ -62,8 +21,6 @@ class Parser {
 		// Переменные
 		if (['var', 'const'].includes(peek.type)) this.parseVar(parent);
 	}
-
-	parse() {}
 
 	parseLiteral(parent) {
 		const literal = this.peek();
@@ -123,7 +80,7 @@ class Parser {
 
 		if (this.peek()?.type === '=') {
 			this.pos++;
-			this.mainParse(obj);
+			//this.parseExpression(obj);
 		}
 
 		parent.value.push(obj);
