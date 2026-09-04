@@ -3,8 +3,6 @@ class ParserExpressions extends ParserBase {
 		super();
 	}
 
-	parse() {}
-
 	// Точка входа
 	parseExpression() {}
 

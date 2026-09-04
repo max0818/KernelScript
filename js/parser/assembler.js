@@ -9,14 +9,14 @@ class Parser extends ParserBase {
 
 		ParserPosManager.init(new Lexer(code).tokens);
 
-		this.init();
+		this.parseProgram();
 	}
 
 	initAllComps() {
 		this.expressions = new ParserExpressions();
 	}
 
-	init() {
+	parseProgram() {
 		this.initAllComps();
 
 		const maxSteps = 1;
