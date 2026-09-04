@@ -30,17 +30,18 @@ class Parser extends ParserBase {
 			this.parse(this.ast);
 			++step;
 		}
+
 		console.log(this.ast.value);
 	}
 
 	parse(parent) {
-		//
+		console.log(JSON.stringify(this.expressions.parseExpression(), null, 2));
 	}
 }
 
 const code = `
 
-var x: string = 'Просто строка, без матов'
+
 
 `;
 

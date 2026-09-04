@@ -15,7 +15,7 @@ class ParserExpressions extends ParserBase {
 
 		if (!this.isEnd() && ['=', '+=', '-=', '*=', '/=', '%=', '**='].includes(this.peek().type)) {
 			const operator = this.peek().value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseAssignment();
 
@@ -35,10 +35,10 @@ class ParserExpressions extends ParserBase {
 		const condition = this.parseOr();
 
 		if (this.peek()?.type === '?') {
-			this.pos++;
+			ParserPosManager.pos++;
 			const consequent = this.parseConditional();
 			if (this.peek()?.type !== ':') this.error(`В строке ${this.peek()?.row} ожидался ":", но был получен: ${this.peek()?.value}`);
-			this.pos++;
+			ParserPosManager.pos++;
 			const alternate = this.parseConditional();
 			return {
 				type: 'TernaryExpression',
@@ -57,7 +57,7 @@ class ParserExpressions extends ParserBase {
 
 		while (!this.isEnd() && this.peek().type === 'or') {
 			const operator = this.peek().value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseAnd();
 
@@ -77,7 +77,7 @@ class ParserExpressions extends ParserBase {
 
 		while (!this.isEnd() && this.peek().type === 'and') {
 			const operator = this.peek().value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseEquality();
 
@@ -98,7 +98,7 @@ class ParserExpressions extends ParserBase {
 
 		while (!this.isEnd() && ['==', '!='].includes(this.peek().type)) {
 			const operator = this.peek()?.value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseComparison();
 
@@ -118,7 +118,7 @@ class ParserExpressions extends ParserBase {
 
 		while (!this.isEnd() && ['<', '>', '<=', '>='].includes(this.peek().type)) {
 			const operator = this.peek()?.value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseAdditive();
 
@@ -139,7 +139,7 @@ class ParserExpressions extends ParserBase {
 
 		while (!this.isEnd() && ['+', '-'].includes(this.peek().type)) {
 			const operator = this.peek().value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseMultiplicative();
 
@@ -159,7 +159,7 @@ class ParserExpressions extends ParserBase {
 
 		while (!this.isEnd() && ['*', '/', '%'].includes(this.peek().type)) {
 			const operator = this.peek().value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseExponentiation();
 
@@ -180,7 +180,7 @@ class ParserExpressions extends ParserBase {
 
 		while (!this.isEnd() && this.peek().type === '**') {
 			const operator = this.peek().value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const right = this.parseExponentiation();
 
@@ -199,7 +199,7 @@ class ParserExpressions extends ParserBase {
 	parseUnary() {
 		if (!this.isEnd() && ['not', '-', '++', '--', '~'].includes(this.peek().type)) {
 			const operator = this.peek().value;
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const argument = this.parseUnary();
 
@@ -218,14 +218,14 @@ class ParserExpressions extends ParserBase {
 	parsePrimary() {
 		const peek = this.peek();
 
-		if (!peek) this.error('Неожиданный конец кода в строке ' + this.back().row);
+		if (!peek) this.error('Неожиданный конец кода в строке ' + this.back()?.row);
 
 		// Булевы, числа, строки и иные значения
 		if (
 			['bool', 'int', 'float', 'string'].includes(peek.type) ||
 			['null', 'NaN', 'Infinity'].includes(peek.type)
 		) {
-			this.pos++;
+			ParserPosManager.pos++;
 			return {
 				type: 'Literal',
 				value: peek.value
@@ -234,7 +234,7 @@ class ParserExpressions extends ParserBase {
 
 		// Идентификатор
 		if (peek.type === 'identifier') {
-			this.pos++;
+			ParserPosManager.pos++;
 			return {
 				type: 'Identifier',
 				name: peek.value
@@ -243,24 +243,24 @@ class ParserExpressions extends ParserBase {
 
 		// This
 		if (peek.type === 'this') {
-			this.pos++;
+			ParserPosManager.pos++;
 			return {type: 'ThisExpression'}
 		}
 
 		// Super
 		if (peek.type === 'super') {
-			this.pos++;
+			ParserPosManager.pos++;
 			return {type: 'SuperExpression'}
 		}
 
 		// Группа
 		if (peek.type === '(') {
-			this.pos++;
+			ParserPosManager.pos++;
 
 			const expr = this.parseExpression();
 			if (this.peek()?.type !== ')') this.error('Ожидалось ) на строке ' + this.peek().row);
 
-			this.pos++;
+			ParserPosManager.pos++;
 
 			return expr;
 		}
