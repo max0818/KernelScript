@@ -3,6 +3,7 @@ class ParserExpressions extends ParserBase {
 		super();
 	}
 
+
 	// Точка входа
 	parseExpression() {}
 
@@ -35,6 +36,7 @@ class ParserExpressions extends ParserBase {
 
 	// Первичные выражения
 	parsePrimary() {}
+
 
 	// Вспомогательные методы
 
