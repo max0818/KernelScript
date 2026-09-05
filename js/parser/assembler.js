@@ -38,7 +38,10 @@ class Parser extends ParserBase {
 
 const code = `
 
-var i: int = vart()
+{
+print('test');
+++i;
+}
 
 `;
 

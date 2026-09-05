@@ -107,4 +107,31 @@ class ParserStatements extends ParserBase {
 			init
 		};
 	}
+
+	// Блок кода
+	parseBlock() {
+		if (this.peek()?.type !== '{') this.errorString('{');
+
+		ParserPosManager.pos++;
+
+		const body = [];
+
+		while (!this.isEnd() && this.peek()?.type !== '}') {
+			while (this.peek()?.type === ';') ParserPosManager.pos++;
+
+			if (this.peek()?.type === '}') break;
+
+			const stmt = this.parseStatement();
+			body.push(stmt);
+		}
+
+		if (this.peek()?.type !== '}') this.errorString('}');
+
+		ParserPosManager.pos++;
+
+		return {
+			type: 'BlockStatement',
+			body
+		};
+	}
 }
