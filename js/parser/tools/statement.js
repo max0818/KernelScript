@@ -79,8 +79,32 @@ class ParserStatements extends ParserBase {
 		const kind = this.peek().type;
 		ParserPosManager.pos++;
 
-		if (this.peek()?.type !== 'identifier') {
-			this.error(`В строке`)
+		if (this.peek()?.type !== 'identifier') this.errorString('имя переменной');
+		const id = this.peek().value;
+		ParserPosManager.pos++;
+
+		let typeAnnotation = 'any';
+		if (this.peek()?.type === ':') {
+			ParserPosManager.pos++;
+
+			if (this.peek()?.type !== 'type') this.errorString('тип');
+
+			typeAnnotation = this.peek().value;
+			ParserPosManager.pos++;
 		}
+
+		let init = null;
+		if (this.peek()?.type === '=') {
+			ParserPosManager.pos++;
+			init = new ParserExpressions().parseExpression();
+		}
+
+		return {
+			type: 'VariableDeclaration',
+			kind,
+			id,
+			typeAnnotation,
+			init
+		};
 	}
 }
