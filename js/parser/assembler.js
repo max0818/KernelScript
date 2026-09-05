@@ -38,10 +38,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-{
-print('test');
-++i;
-}
+fun().o
 
 `;
 
