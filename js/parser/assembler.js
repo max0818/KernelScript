@@ -12,15 +12,10 @@ class Parser extends ParserBase {
 		this.init();
 	}
 
-	initAllComps() {
-		this.expressions = new ParserExpressions();
-		this.statements = new ParserStatements();
-	}
-
 	init() {
-		this.initAllComps();
+		this.statements = new ParserStatements();
 
-		const maxSteps = 100;
+		const maxSteps = 500;
 		let step = 0;
 
 		while (!this.isEnd() && step < maxSteps) {
