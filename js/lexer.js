@@ -164,6 +164,8 @@ class Lexer {
 	separator() {
 		const peek = this.peek();
 
+		this.pos++;
+
 		this.addToken(peek, peek, this.row);
 	}
 
