@@ -207,7 +207,10 @@ class ParserExpressions extends ParserBase {
 
 			const argument = this.parseUnary();
 
-			if (argument?.type === 'UnaryExpression') {
+			if (
+				argument?.type === 'UnaryExpression' &&
+				['++', '--'].includes(operator?.type)
+			) {
 				this.error(`В строке ${operator?.row} нельзя применять префиксный оператор ${operator?.value}`);
 			}
 
@@ -332,7 +335,7 @@ class ParserExpressions extends ParserBase {
 			}
 
 			if (['++', '--'].includes(peek.type)) {
-				if (expr.type === 'UnaryExpression') {
+				if (expr.type === 'UnaryExpression' && ['++', '--'].includes(expr.type)) {
 					this.error(`В строке ${peek.row} нельзя применить постфиксный оператор ${peek.value}`);
 				}
 
