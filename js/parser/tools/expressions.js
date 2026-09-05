@@ -253,13 +253,7 @@ class ParserExpressions extends ParserBase {
 
 		// Группа
 		if (peek.type === '(') {
-			ParserPosManager.pos++;
-
-			const expr = this.parseExpression();
-			if (this.peek()?.type !== ')') this.error('Ожидалось ) на строке ' + this.peek().row);
-
-			ParserPosManager.pos++;
-
+			const expr = this.parseGroup();
 			return this.parseCall(expr);
 		}
 
@@ -277,8 +271,7 @@ class ParserExpressions extends ParserBase {
 
 		// Создание экземпляра класса
 		if (peek.type === 'new') {
-			const expr = this.parseNew();
-			return this.parseCall(expr);
+			return this.parseNew();
 		}
 
 		this.error(`Неожиданный токен на строке ${peek.row}: ${peek.value} (${peek.type})`);
@@ -320,6 +313,7 @@ class ParserExpressions extends ParserBase {
 					callee: expr,
 					arguments: args
 				};
+
 				continue;
 			}
 
@@ -469,8 +463,27 @@ class ParserExpressions extends ParserBase {
 	}
 
 	// Скобки
-	parseGroup() {}
+	parseGroup() {
+		ParserPosManager.pos++;
+
+		const expr = this.parseExpression();
+		if (this.peek()?.type !== ')') {
+			this.error(`В строке ${this.peek()?.row} ожидалось ")", но был получен: ${this.peek()?.value}`);
+		}
+
+		ParserPosManager.pos++;
+
+		return this.parseCall(expr);
+	}
 
 	// Создание экземпляров классов
-	parseNew() {}
+	parseNew() {
+		ParserPosManager.pos++;
+
+		let expr;
+		expr = this.parseCall(expr);
+		//expr.type = 'NewExpression';
+
+		return expr;
+	}
 }
