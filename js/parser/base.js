@@ -80,4 +80,8 @@ class ParserBase {
 	error(message) {
 		return ParserPosManager.error(message);
 	}
+
+	errorString(e) {
+		return this.error(`В строке ${this.back()?.row} ожидался "${e}", но был получен: ${this.peek()?.value} (${this.peek()?.type})`);
+	}
 }

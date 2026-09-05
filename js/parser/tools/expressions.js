@@ -37,7 +37,7 @@ class ParserExpressions extends ParserBase {
 		if (this.peek()?.type === '?') {
 			ParserPosManager.pos++;
 			const consequent = this.parseConditional();
-			if (this.peek()?.type !== ':') this.error(`В строке ${this.peek()?.row} ожидался ":", но был получен: ${this.peek()?.value}`);
+			if (this.peek()?.type !== ':') this.errorString(':');
 			ParserPosManager.pos++;
 			const alternate = this.parseConditional();
 			return {
@@ -305,9 +305,7 @@ class ParserExpressions extends ParserBase {
 					}
 				}
 
-				if (this.peek()?.type !== ')') {
-					this.error(`В строке ${this.back()?.row} ожидалось ")", но был получен: ${this.peek()?.value}`);
-				}
+				if (this.peek()?.type !== ')') this.errorString(')');
 				ParserPosManager.pos++;
 
 				expr = {
@@ -340,9 +338,7 @@ class ParserExpressions extends ParserBase {
 			ParserPosManager.pos++;
 
 			const prop = this.peek();
-			if (prop?.type !== 'identifier') {
-				this.error(`В строке ${prop?.row} ожидалось имя свойства, но был получен: ${prop?.row}`);
-			}
+			if (prop?.type !== 'identifier') this.errorString('имя свойства');
 			ParserPosManager.pos++;
 
 			return {
@@ -361,9 +357,7 @@ class ParserExpressions extends ParserBase {
 			ParserPosManager.pos++;
 
 			const index = this.parseExpression();
-			if (this.peek()?.type !== ']') {
-				this.error(`В строке ${this.peek()?.row} ожидалось "]", но был получен: ${this.peek()?.value}`);
-			}
+			if (this.peek()?.type !== ']') this.errorString(']');
 			ParserPosManager.pos++;
 
 			return {
@@ -374,14 +368,12 @@ class ParserExpressions extends ParserBase {
 			};
 		}
 
-		this.error(`В строке ${peek?.row} ожидался "]", но был получен: ${peek?.row}`);
+		this.errorString(']');
 	}
 
 	// Массив
 	parseArray() {
-		if (this.peek()?.type !== '[') {
-			this.error(`В строке ${this.peek()?.row} ожидалось "[", но был получен: ${this.peek()?.value}`);
-		}
+		if (this.peek()?.type !== '[') this.errorString('[');
 
 		ParserPosManager.pos++;
 
@@ -403,9 +395,7 @@ class ParserExpressions extends ParserBase {
 			}
 		}
 
-		if (this.peek()?.type !== ']') {
-			this.error(`В строке ${this.peek()?.row} ожидалось "]", но был получен: ${this.peek()?.value}`);
-		}
+		if (this.peek()?.type !== ']') this.errorString(']');
 
 		ParserPosManager.pos++;
 
@@ -414,9 +404,7 @@ class ParserExpressions extends ParserBase {
 
 	// Объект
 	parseObject() {
-		if (this.peek()?.type !== '{') {
-			this.error(`В строке ${this.peek()?.row} ожидалось "{", но был получен: ${this.peek()?.value}`);
-		}
+		if (this.peek()?.type !== '{') this.errorString('{');
 
 		ParserPosManager.pos++;
 
@@ -428,15 +416,13 @@ class ParserExpressions extends ParserBase {
 
 				const peek = this.peek();
 				if (peek?.type !== 'identifier' && peek?.type !== 'string') {
-					this.error(`В строке ${peek?.row} ожидался ключ (идентификатор или строка), но был получен: ${peek?.value}`);
+					this.errorString("ключ (идентификатор или строка)");
 				}
 
 				const key = peek.value;
 				ParserPosManager.pos++;
 
-				if (this.peek()?.type !== ':') {
-					this.error(`В строке ${this.peek()?.row} ожидалось ":", но был получен: ${this.peek()?.value}`);
-				}
+				if (this.peek()?.type !== ':') this.errorString(':');
 				ParserPosManager.pos++;
 
 				const value = this.parseExpression();
@@ -456,9 +442,7 @@ class ParserExpressions extends ParserBase {
 			}
 		}
 
-		if (this.peek()?.type !== '}') {
-			this.error(`В строку ${this.peek()?.row} ожидалось "}", но был получен: ${this.peek()?.value}`);
-		}
+		if (this.peek()?.type !== '}') this.errorString('}');
 
 		ParserPosManager.pos++;
 
@@ -473,9 +457,7 @@ class ParserExpressions extends ParserBase {
 		ParserPosManager.pos++;
 
 		const expr = this.parseExpression();
-		if (this.peek()?.type !== ')') {
-			this.error(`В строке ${this.peek()?.row} ожидалось ")", но был получен: ${this.peek()?.value}`);
-		}
+		if (this.peek()?.type !== ')') this.errorString(')');
 
 		ParserPosManager.pos++;
 
@@ -484,18 +466,14 @@ class ParserExpressions extends ParserBase {
 
 	// Создание экземпляров классов
 	parseNew() {
-		if (this.peek()?.type !== 'new') {
-			this.error(`В строке ${this.peek()?.row} ожидалось "new", но был получен: ${this.peek()?.value}`);
-		}
+		if (this.peek()?.type !== 'new') this.errorString('new');
 		ParserPosManager.pos++;
 
 		const callee = {type: 'NewExpression', name: this.peek()?.value};
 
 		ParserPosManager.pos++;
 
-		if (this.peek()?.type !== '(') {
-			this.error(`В строке ${this.back()?.row} ожидалось "(", но был получен: ${this.peek()?.value}`);
-		}
+		if (this.peek()?.type !== '(') this.errorString('(');
 
 		return this.parseCall(callee);
 	}

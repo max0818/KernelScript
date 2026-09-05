@@ -76,6 +76,11 @@ class ParserStatements extends ParserBase {
 
 	// Переменная или константа
 	parseVarDeclaration() {
-		//
+		const kind = this.peek().type;
+		ParserPosManager.pos++;
+
+		if (this.peek()?.type !== 'identifier') {
+			this.error(`В строке`)
+		}
 	}
 }
