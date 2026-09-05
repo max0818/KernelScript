@@ -111,7 +111,7 @@ class ParserStatements extends ParserBase {
 		};
 	}
 
-	// Является ли блок кода объектом?
+	// Является ли блок кода объектом
 	isObject() {
 		this.expect('{', '{');
 
