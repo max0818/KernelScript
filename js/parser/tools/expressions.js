@@ -304,7 +304,7 @@ class ParserExpressions extends ParserBase {
 				}
 
 				if (this.peek()?.type !== ')') {
-					this.error(`В строке ${this.peek()?.row} ожидалось ")", но был получен: ${this.peek()?.value}`);
+					this.error(`В строке ${this.back()?.row} ожидалось ")", но был получен: ${this.peek()?.value}`);
 				}
 				ParserPosManager.pos++;
 
@@ -478,12 +478,35 @@ class ParserExpressions extends ParserBase {
 
 	// Создание экземпляров классов
 	parseNew() {
+		const peek = this.peek();
+
+		if (peek?.type !== 'new') {
+			this.error(`В строке ${peek?.row} ожидалось "new", но был получен: ${peek?.value}`);
+		}
+
 		ParserPosManager.pos++;
 
-		let expr;
-		expr = this.parseCall(expr);
-		//expr.type = 'NewExpression';
+		const expr = {type: 'NewExpression', name: this.peek().value};
 
-		return expr;
+		ParserPosManager.pos++;
+
+		const callee = this.parseCall(expr);
+
+		if (callee.type !== 'CallExpression' && !this.parseNewComp(callee)) {
+			this.error(`В строке ${peek?.row} ожидался вызов инициализации экземпляра класса`);
+		}
+
+		return callee;
+	}
+
+	parseNewComp(callee) {
+		let temp = callee;
+
+		while (temp?.object) {
+			if (temp?.object?.type === 'CallExpression') return true;
+			temp = temp.object;
+		}
+
+		return false;
 	}
 }
