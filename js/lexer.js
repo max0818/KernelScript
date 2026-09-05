@@ -41,6 +41,7 @@ class Lexer {
 
 		// Циклы
 		'while',
+		'continue',
 		'break',
 
 		// Функции
