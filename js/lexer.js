@@ -86,12 +86,14 @@ class Lexer {
 		// Пропуск пробела
 		if (
 			peek === ' ' ||
-			peek === ';' ||
 			peek === '\t'
 		) this.pos++;
 
 		// Следующая строка
 		else if (peek === '\n') this.nextRow();
+
+		// Разделитель
+		else if (peek === ';') this.separator();
 
 		// Однострочные комментарии
 		else if (peek === '#') this.commentLineChecker();
@@ -155,6 +157,14 @@ class Lexer {
 			type: type,
 			row: row
 		});
+	}
+
+	// Разделитель
+
+	separator() {
+		const peek = this.peek();
+
+		this.addToken(peek, peek, this.row);
 	}
 
 	// Комментарии

@@ -37,7 +37,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-[34,]
+abdfb;()
 
 `;
 
