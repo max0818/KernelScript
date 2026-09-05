@@ -30,6 +30,14 @@ class ParserPosManager {
 		}
 	}
 
+	static expectType(...type) {
+		const temp = type.includes(this.peek()?.type);
+
+		if (!temp) {
+			this.error(`В строке ${this.back()?.row} ожидались типы (${type}), но был получен: ${this.peek()?.type}`);
+		}
+	}
+
 	// Логирование
 
 	static error(message) {
@@ -55,19 +63,10 @@ class ParserBase {
 	next() {return ParserPosManager.next()}
 	isEnd() {return ParserPosManager.isEnd()}
 
-	expect(type, value) {
-		return ParserPosManager.expect(type, value);
-	}
-	expectType(type) {
-		return ParserPosManager.expectType(type);
-	}
-	expectValue(value) {
-		return ParserPosManager.expectValue(value);
-	}
+	expect(type, value) {return ParserPosManager.expect(type, value)}
+	expectType(...type) {return ParserPosManager.expectType(type)}
 
-	error(message) {
-		return ParserPosManager.error(message);
-	}
+	error(message) {return ParserPosManager.error(message)}
 
 	errorString(e) {
 		return this.error(`В строке ${this.back()?.row} ожидался "${e}", но был получен: ${this.peek()?.value} (${this.peek()?.type})`);

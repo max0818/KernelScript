@@ -37,7 +37,7 @@ class ParserExpressions extends ParserBase {
 		if (this.peek()?.type === '?') {
 			ParserPosManager.pos++;
 			const consequent = this.parseConditional();
-			if (this.peek()?.type !== ':') this.errorString(':');
+			this.expect(':', ':');
 			ParserPosManager.pos++;
 			const alternate = this.parseConditional();
 			return {
@@ -305,7 +305,7 @@ class ParserExpressions extends ParserBase {
 					}
 				}
 
-				if (this.peek()?.type !== ')') this.errorString(')');
+				this.expect(')', ')');
 				ParserPosManager.pos++;
 
 				expr = {
@@ -338,7 +338,7 @@ class ParserExpressions extends ParserBase {
 			ParserPosManager.pos++;
 
 			const prop = this.peek();
-			if (prop?.type !== 'identifier') this.errorString('имя свойства');
+			this.expectType('identifier');
 			ParserPosManager.pos++;
 
 			return {
@@ -357,7 +357,7 @@ class ParserExpressions extends ParserBase {
 			ParserPosManager.pos++;
 
 			const index = this.parseExpression();
-			if (this.peek()?.type !== ']') this.errorString(']');
+			this.expect(']', ']');
 			ParserPosManager.pos++;
 
 			return {
@@ -368,12 +368,12 @@ class ParserExpressions extends ParserBase {
 			};
 		}
 
-		this.errorString(']');
+		this.expect(']', ']');
 	}
 
 	// Массив
 	parseArray() {
-		if (this.peek()?.type !== '[') this.errorString('[');
+		this.expect('[', '[');
 
 		ParserPosManager.pos++;
 
@@ -395,7 +395,7 @@ class ParserExpressions extends ParserBase {
 			}
 		}
 
-		if (this.peek()?.type !== ']') this.errorString(']');
+		this.expect(']', ']');
 
 		ParserPosManager.pos++;
 
@@ -404,7 +404,7 @@ class ParserExpressions extends ParserBase {
 
 	// Объект
 	parseObject() {
-		if (this.peek()?.type !== '{') this.errorString('{');
+		this.expect('{', '{');
 
 		ParserPosManager.pos++;
 
@@ -415,14 +415,12 @@ class ParserExpressions extends ParserBase {
 				if (this.peek()?.type === '}') break;
 
 				const peek = this.peek();
-				if (peek?.type !== 'identifier' && peek?.type !== 'string') {
-					this.errorString("ключ (идентификатор или строка)");
-				}
+				this.expectType('identifier', 'string');
 
 				const key = peek.value;
 				ParserPosManager.pos++;
 
-				if (this.peek()?.type !== ':') this.errorString(':');
+				this.expect(':', ':');
 				ParserPosManager.pos++;
 
 				const value = this.parseExpression();
@@ -442,7 +440,7 @@ class ParserExpressions extends ParserBase {
 			}
 		}
 
-		if (this.peek()?.type !== '}') this.errorString('}');
+		this.expect('}', '}');
 
 		ParserPosManager.pos++;
 
@@ -454,10 +452,11 @@ class ParserExpressions extends ParserBase {
 
 	// Скобки
 	parseGroup() {
+		this.expect('(', '(');
 		ParserPosManager.pos++;
 
 		const expr = this.parseExpression();
-		if (this.peek()?.type !== ')') this.errorString(')');
+		this.expect(')', ')');
 
 		ParserPosManager.pos++;
 
@@ -466,14 +465,14 @@ class ParserExpressions extends ParserBase {
 
 	// Создание экземпляров классов
 	parseNew() {
-		if (this.peek()?.type !== 'new') this.errorString('new');
+		this.expect('new', 'new');
 		ParserPosManager.pos++;
 
 		const callee = {type: 'NewExpression', name: this.peek()?.value};
 
 		ParserPosManager.pos++;
 
-		if (this.peek()?.type !== '(') this.errorString('(');
+		this.expect('(', '(');
 
 		return this.parseCall(callee);
 	}
