@@ -14,6 +14,7 @@ class Parser extends ParserBase {
 
 	initAllComps() {
 		this.expressions = new ParserExpressions();
+		this.statements = new ParserStatements();
 	}
 
 	init() {
