@@ -19,7 +19,14 @@ class ParserStatements extends ParserBase {
 
 		// Блок
 		if (peek === '{') {
-			return this.parseBlock();
+			if (this.isObject()) {
+				const expr = new ParserExpressions().parseObject();
+
+				return {
+					type: 'ExpressionStatement',
+					expression: expr
+				};
+			} else return this.parseBlock();
 		}
 
 		// Условный оператор if-else
@@ -108,9 +115,29 @@ class ParserStatements extends ParserBase {
 		};
 	}
 
+	// Является ли блок кода объектом?
+	isObject() {
+		this.expect('{', '{');
+
+		const peek = this.next();
+
+		if (peek.type === '}') return true;
+
+		if (peek.type === 'identifier' || peek.type === 'string') {
+			ParserPosManager.pos++;
+
+			const next = this.next();
+			ParserPosManager.pos--;
+
+			return next?.type === ':';
+		}
+
+		return false;
+	}
+
 	// Блок кода
 	parseBlock() {
-		if (this.peek()?.type !== '{') this.errorString('{');
+		this.expect('{', '{');
 
 		ParserPosManager.pos++;
 
@@ -125,7 +152,7 @@ class ParserStatements extends ParserBase {
 			body.push(stmt);
 		}
 
-		if (this.peek()?.type !== '}') this.errorString('}');
+		this.expect('}', '}');
 
 		ParserPosManager.pos++;
 
