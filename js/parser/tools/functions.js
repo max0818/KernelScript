@@ -97,7 +97,38 @@ class ParserFunctions extends ParserBase {
 	}
 
 	// Функция как выражение
-	parseFunctionExpression() {}
+	parseFunctionExpression() {
+		this.expect('fn', 'fn');
+		ParserPosManager.pos++;
+
+		if (this.peek()?.type === 'identifier') {
+			this.error(`В строке ${this.peek()?.row} у данной функции не может быть имени`);
+		}
+		
+		this.expect('(', '(');
+		ParserPosManager.pos++;
+
+		const params = this.parseFunctionParams();
+
+		this.expect(')', ')');
+		ParserPosManager.pos++;
+
+		let returnType = 'any';
+		if (this.peek()?.type === ':') {
+			ParserPosManager.pos++;
+			returnType = new ParserExpressions().parseTypeAnnotation();
+		}
+
+		const body = new ParserStatements().parseBlock();
+
+		return {
+			type: 'FunctionExpression',
+			id: null,
+			params,
+			returnType,
+			body
+		};
+	}
 
 	// Является ли выражение функцией
 	isFunctionExpression() {
