@@ -1,4 +1,8 @@
 class ParserExpressions extends ParserBase {
+	static COMPOUND_TYPES = ['array', 'object'];
+	static FUNCTION_TYPES = ['function'];
+	static SIMPLE_TYPES = ['any', 'bool', 'int', 'float', 'string'];
+
 	constructor() {
 		super();
 	}
@@ -489,6 +493,13 @@ class ParserExpressions extends ParserBase {
 		const subNames = [];
 
 		if (this.peek()?.type === '<') {
+			if (
+				!ParserExpressions.COMPOUND_TYPES.includes(name) &&
+				!ParserExpressions.FUNCTION_TYPES.includes(name)
+			) {
+				this.error(`В строке ${this.peek()?.row} тип ${name} не может быть составным`);
+			}
+
 			ParserPosManager.pos++;
 
 			while (!this.isEnd() && this.peek()?.type !== '>') {
@@ -511,10 +522,12 @@ class ParserExpressions extends ParserBase {
 
 			this.expect('>', '>');
 
+			if (ParserExpressions.FUNCTION_TYPES.includes(name) && subNames.length > 1) {
+				this.error(`В строке ${this.peek()?.row} тип ${name} может иметь лишь 1 вложенный тип`);
+			}
+
 			ParserPosManager.pos++;
 		}
-
-		//
 
 		return {
 			type: 'TypeAnnotation',
