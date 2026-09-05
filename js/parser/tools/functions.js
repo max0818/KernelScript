@@ -79,7 +79,8 @@ class ParserFunctions extends ParserBase {
 				type: 'Param',
 				name,
 				typeAnnotation,
-				isRest
+				isRest,
+				defaultValue
 			});
 
 			if (this.peek()?.type === ',') {
