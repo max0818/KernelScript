@@ -157,4 +157,22 @@ class ParserStatements extends ParserBase {
 			body
 		};
 	}
+
+	parseReturnStatement() {
+		this.expectType('return');
+
+		ParserPosManager.pos++;
+
+		let argument = null;
+		if ([';', '}'].includes(this.peek()?.type)) {
+			argument = new ParserExpressions().parseExpression();
+		}
+
+		if (this.peek()?.type === ';') ParserPosManager.pos++;
+
+		return {
+			type: 'ReturnStatement',
+			argument
+		};
+	}
 }

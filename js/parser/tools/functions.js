@@ -8,7 +8,9 @@ class ParserFunctions extends ParserBase {
 	parseFunctionDeclaration() {}
 
 	// Параметры функции
-	parseFunctionParams() {}
+	parseFunctionParams() {
+		//
+	}
 
 	// Функция как выражение
 	parseFunctionExpression() {}
