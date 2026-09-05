@@ -56,7 +56,7 @@ class ParserStatements extends ParserBase {
 
 		// Функция
 		if (peek === 'fn') {
-			return this.parseFunctionStatement();
+			return new ParserFunctions().parseFunctionDeclaration();
 		}
 
 		// Инструкция return
