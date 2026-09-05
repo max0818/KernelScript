@@ -129,9 +129,4 @@ class ParserFunctions extends ParserBase {
 			body
 		};
 	}
-
-	// Является ли выражение функцией
-	isFunctionExpression() {
-		return this.peek()?.type === 'fn';
-	}
 }

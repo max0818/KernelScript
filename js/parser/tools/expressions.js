@@ -287,6 +287,10 @@ class ParserExpressions extends ParserBase {
 			return this.parseNew();
 		}
 
+		if (peek.type === 'fn') {
+			return new ParserFunctions().parseFunctionExpression();
+		}
+
 		this.error(`Неожиданный токен на строке ${peek.row}: ${peek.value} (${peek.type})`);
 	}
 
