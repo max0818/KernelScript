@@ -322,9 +322,29 @@ class ParserExpressions extends ParserBase {
 			}
 
 			// Обращение к свойству или элементу
-			if (peek.type === '.' || peek.type === '[') {
+			if (['.', '['].includes(peek.type)) {
 				expr = this.parseMember(expr);
 				continue;
+			}
+
+			if (['++', '--'].includes(peek.type)) {
+				if (expr.type === 'UnaryExpression') {
+					this.error(`В строке ${peek.row} нельзя применить постфиксный оператор ${peek.value}`);
+				}
+
+				if (!['Identifier', 'MemberExpression', 'ThisExpression'].includes(expr.type)) {
+					this.error(`В строке ${peek.row} оператор ${peek.value} можно применить лишь к переменным или свойствам`);
+				}
+
+				const operator = peek.value;
+				ParserPosManager.pos++;
+
+				return {
+					type: 'UnaryExpression',
+					operator,
+					arguments: expr,
+					prefix: false
+				};
 			}
 
 			break;

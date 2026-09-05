@@ -38,7 +38,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-
+++c++
 
 `;
 
