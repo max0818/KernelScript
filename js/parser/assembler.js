@@ -37,7 +37,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-new class().prop
+new t()
 
 `;
 

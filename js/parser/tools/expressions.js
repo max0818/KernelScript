@@ -478,35 +478,19 @@ class ParserExpressions extends ParserBase {
 
 	// Создание экземпляров классов
 	parseNew() {
-		const peek = this.peek();
-
-		if (peek?.type !== 'new') {
-			this.error(`В строке ${peek?.row} ожидалось "new", но был получен: ${peek?.value}`);
+		if (this.peek()?.type !== 'new') {
+			this.error(`В строке ${this.peek()?.row} ожидалось "new", но был получен: ${this.peek()?.value}`);
 		}
+		ParserPosManager.pos++;
+
+		const callee = {type: 'NewExpression', name: this.peek()?.value};
 
 		ParserPosManager.pos++;
 
-		const expr = {type: 'NewExpression', name: this.peek().value};
-
-		ParserPosManager.pos++;
-
-		const callee = this.parseCall(expr);
-
-		if (callee.type !== 'CallExpression' && !this.parseNewComp(callee)) {
-			this.error(`В строке ${peek?.row} ожидался вызов инициализации экземпляра класса`);
+		if (this.peek()?.type !== '(') {
+			this.error(`В строке ${this.back()?.row} ожидалось "(", но был получен: ${this.peek()?.value}`);
 		}
 
-		return callee;
-	}
-
-	parseNewComp(callee) {
-		let temp = callee;
-
-		while (temp?.object) {
-			if (temp?.object?.type === 'CallExpression') return true;
-			temp = temp.object;
-		}
-
-		return false;
+		return this.parseCall(callee);
 	}
 }
