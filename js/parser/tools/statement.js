@@ -93,11 +93,7 @@ class ParserStatements extends ParserBase {
 		let typeAnnotation = 'any';
 		if (this.peek()?.type === ':') {
 			ParserPosManager.pos++;
-
-			if (this.peek()?.type !== 'type') this.errorString('тип');
-
-			typeAnnotation = this.peek().value;
-			ParserPosManager.pos++;
+			typeAnnotation = new ParserExpressions().parseTypeAnnotation();
 		}
 
 		let init = null;

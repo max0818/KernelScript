@@ -476,4 +476,50 @@ class ParserExpressions extends ParserBase {
 
 		return this.parseCall(callee);
 	}
+
+	// Работа с типами
+	parseTypeAnnotation() {
+		const peek = this.peek();
+
+		this.expectType('type');
+
+		const name = peek.value;
+		ParserPosManager.pos++;
+
+		const subNames = [];
+
+		if (this.peek()?.type === '<') {
+			ParserPosManager.pos++;
+
+			while (!this.isEnd() && this.peek()?.type !== '>') {
+				const token = this.peek();
+
+				this.expectType('type');
+
+				subNames.push(token.value);
+				ParserPosManager.pos++;
+
+				if (this.peek()?.type === ',') {
+					ParserPosManager.pos++;
+					continue;
+				}
+
+				this.expect('>', '>');
+
+				break;
+			}
+
+			this.expect('>', '>');
+
+			ParserPosManager.pos++;
+		}
+
+		//
+
+		return {
+			type: 'TypeAnnotation',
+			name,
+			subNames
+		}
+	}
 }
