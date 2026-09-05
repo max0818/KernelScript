@@ -32,13 +32,13 @@ class Parser extends ParserBase {
 	}
 
 	parse(parent) {
-		parent.value.push(this.expressions.parseExpression());
+		parent.value.push(this.statements.parseStatement());
 	}
 }
 
 const code = `
 
-abdfb();
+;
 
 `;
 

@@ -218,7 +218,9 @@ class ParserExpressions extends ParserBase {
 	parsePrimary() {
 		const peek = this.peek();
 
-		if (!peek) this.error('Неожиданный конец кода в строке ' + this.back()?.row);
+		if (!peek) {
+			this.error('Неожиданный конец кода в строке ' + this.back()?.row);
+		}
 
 		// Булевы, числа, строки и иные значения
 		if (
