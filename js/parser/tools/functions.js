@@ -24,7 +24,7 @@ class ParserFunctions extends ParserBase {
 		let returnType = 'any';
 		if (this.peek()?.type === ':') {
 			ParserPosManager.pos++;
-			returnType = new ParserExpressions().typeAnnotation();
+			returnType = new ParserExpressions().parseTypeAnnotation();
 		}
 
 		const body = new ParserStatements().parseBlock();

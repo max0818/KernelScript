@@ -33,7 +33,9 @@ class Parser extends ParserBase {
 
 const code = `
 
-fn 
+fn test(a: float): float {
+	return NaN
+}
 
 `;
 
