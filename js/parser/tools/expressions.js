@@ -202,14 +202,18 @@ class ParserExpressions extends ParserBase {
 	// Унарные операторы
 	parseUnary() {
 		if (!this.isEnd() && ['not', '-', '++', '--', '~'].includes(this.peek().type)) {
-			const operator = this.peek().value;
+			const operator = this.peek();
 			ParserPosManager.pos++;
 
 			const argument = this.parseUnary();
 
+			if (argument?.type === 'UnaryExpression') {
+				this.error(`В строке ${operator?.row} нельзя применять префиксный оператор ${operator?.value}`);
+			}
+
 			return {
 				type: 'UnaryExpression',
-				operator,
+				operator: operator.value,
 				argument,
 				prefix: true
 			};
@@ -333,7 +337,7 @@ class ParserExpressions extends ParserBase {
 				}
 
 				if (!['Identifier', 'MemberExpression', 'ThisExpression'].includes(expr.type)) {
-					this.error(`В строке ${peek.row} оператор ${peek.value} можно применить лишь к переменным или свойствам`);
+					this.error(`В строке ${peek.row} постфиксный оператор ${peek.value} можно применить лишь к переменным или свойствам`);
 				}
 
 				const operator = peek.value;
