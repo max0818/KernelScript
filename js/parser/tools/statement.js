@@ -73,4 +73,9 @@ class ParserStatements extends ParserBase {
 			expression: expr
 		};
 	}
+
+	// Переменная или константа
+	parseVarDeclaration() {
+		//
+	}
 }
