@@ -33,7 +33,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-fn test(a: float = 6): float {}
+var test: function<float> = fn(a: float = 6): float {}
 
 `;
 
