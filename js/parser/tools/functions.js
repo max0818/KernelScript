@@ -61,6 +61,16 @@ class ParserFunctions extends ParserBase {
 				typeAnnotation = new ParserExpressions().parseTypeAnnotation();
 			}
 
+			let defaultValue = null;
+			if (this.peek()?.type === '=') {
+				ParserPosManager.pos++;
+				defaultValue = new ParserExpressions().parseExpression();
+
+				if (isRest) {
+					this.error(`В строке ${this.peek()?.row} rest-параметр не может иметь значение по-умолчанию`);
+				}
+			}
+
 			if (isRest && this.peek()?.type === ',') {
 				this.error(`В строке ${this.peek()?.row} rest-параметр ${name} должен быть последним`);
 			}
