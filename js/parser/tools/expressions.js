@@ -274,11 +274,6 @@ class ParserExpressions extends ParserBase {
 			return this.parseNew();
 		}
 
-		if (peek.type === ';') {
-			ParserPosManager.pos++;
-			return {type: 'Separator'};
-		}
-
 		this.error(`Неожиданный токен на строке ${peek.row}: ${peek.value} (${peek.type})`);
 	}
 
