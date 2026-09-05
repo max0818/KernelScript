@@ -387,6 +387,8 @@ class ParserExpressions extends ParserBase {
 
 		if (this.peek()?.type !== ']') {
 			while (!this.isEnd()) {
+				if (this.peek()?.type === ']') break;
+
 				const element = this.parseExpression();
 				elements.push(element);
 
@@ -420,6 +422,8 @@ class ParserExpressions extends ParserBase {
 
 		if (this.peek()?.type !== '}') {
 			while (!this.isEnd()) {
+				if (this.peek()?.type === '}') break;
+
 				const peek = this.peek();
 				if (peek?.type !== 'identifier' && peek?.type !== 'string') {
 					this.error(`В строке ${peek?.row} ожидался ключ (идентификатор или строка), но был получен: ${peek?.value}`);
