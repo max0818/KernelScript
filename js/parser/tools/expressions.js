@@ -252,7 +252,7 @@ class ParserExpressions extends ParserBase {
 		// Тип-значение
 		if (['null', 'NaN', 'Infinity'].includes(peek.value + '')) {
 			ParserPosManager.pos++;
-			return {type: 'TypeValueExpression', name: peek.value};
+			return {type: 'TypeValueExpression', name: peek.value + ''};
 		}
 
 		// This

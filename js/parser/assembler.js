@@ -33,7 +33,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-var t: null = null
+var t = Infinity
 
 `;
 
