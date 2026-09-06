@@ -33,7 +33,17 @@ class Parser extends ParserBase {
 
 const code = `
 
-var test: function<float> = fn(a: float = 6): float {}
+var add = fn(a: int, b: int): int {
+  return a + b
+}
+
+var greet = fn(name: string = "Guest") {
+  print("Hello " + name)
+}
+
+var factorial = fn(n: int): int {
+  return n * factorial(n - 1)
+}
 
 `;
 

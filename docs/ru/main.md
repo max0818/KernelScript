@@ -6,7 +6,6 @@
 
 ## Главное
 
-- [Значения](documentation/values.md)
 - [Типы](documentation/types.md)
 - [Особенности](documentation/special.md)
 
