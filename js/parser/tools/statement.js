@@ -66,7 +66,7 @@ class ParserStatements extends ParserBase {
 
 		// Флаг
 		if (peek === 'flag') {
-			return this.parseFlagDeclaration();
+			return new ParserControls().parseFlagDeclaration();
 		}
 
 		const expr = new ParserExpressions().parseExpression();

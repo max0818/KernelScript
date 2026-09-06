@@ -33,7 +33,8 @@ class Parser extends ParserBase {
 
 const code = `
 
-
+flag Math
+flag Console
 
 `;
 
