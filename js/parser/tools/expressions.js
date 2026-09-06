@@ -521,7 +521,7 @@ class ParserExpressions extends ParserBase {
 
 		this.expectType('type');
 
-		const name = peek.value;
+		const name = peek.value + '';
 		ParserPosManager.pos++;
 
 		const subNames = [];
@@ -541,7 +541,7 @@ class ParserExpressions extends ParserBase {
 
 				this.expectType('type');
 
-				subNames.push(token.value);
+				subNames.push(token.value + '');
 				ParserPosManager.pos++;
 
 				if (this.peek()?.type === ',') {

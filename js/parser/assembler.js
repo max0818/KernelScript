@@ -33,7 +33,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-var t = Infinity
+var x: NaN
 
 `;
 
