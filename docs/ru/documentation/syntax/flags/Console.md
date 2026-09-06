@@ -6,6 +6,6 @@
 
 |**Метод**|**Описание**|
 |-|-|
-|`print(...value: any)`|Напечатать в консоль|
-|`input(message: any, placeholder: any)`|Ввести в консоль|
-|`clear()`|Очистить консоль|
+|`print(...value: any): bool`|Напечатать в консоль|
+|`input(message: any, placeholder: any): string`|Ввести в консоль|
+|`clear(): bool`|Очистить консоль|

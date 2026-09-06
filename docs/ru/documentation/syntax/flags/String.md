@@ -8,17 +8,17 @@
 |-|-|
 |||
 |**Поиск**||
-|`includes(subString: string)`|Содержит ли строка подстроку|
-|`indexOf(subString: string, startPos: int)`|Получить индекс подстроки с *начала* строки|
-|`lastIndexOf(subString: string, startPos: int)`|Получить индекс подстроки с *конца* строки|
+|`includes(subString: string): bool`|Содержит ли строка подстроку|
+|`indexOf(subString: string, startPos: int): int`|Получить индекс подстроки с *начала* строки|
+|`lastIndexOf(subString: string, startPos: int): int`|Получить индекс подстроки с *конца* строки|
 |||
 |**Изменение**||
-|`slice(startPos: int, endPos: int)`|Обрезать строку|
-|`repeat(n: int)`|Повторить строку *n* раз|
-|`toUpperCase()`|Поменять регистр на *верхний*|
-|`toLowerCase()`|Поменять регистр на *нижний*|
+|`slice(startPos: int, endPos: int): string`|Обрезать строку|
+|`repeat(n: int): string`|Повторить строку *n* раз|
+|`toUpperCase(): string`|Поменять регистр на *верхний*|
+|`toLowerCase(): string`|Поменять регистр на *нижний*|
 |||
 |**Разное**||
-|`toString(variant: any)`|Преобразовать в `string`|
-|`size`|Получить длину строки|
+|`toString(variant: any): string`|Преобразовать в `string`|
+|`size: int`|Получить длину строки|
 |||
