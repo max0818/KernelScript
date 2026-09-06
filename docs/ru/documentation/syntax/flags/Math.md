@@ -16,6 +16,10 @@
 |`round(number: float): float`|Умное округление `1.2 -> 1` `1.8 -> 2`|
 |`floor(number: float): float`|Округление вниз `1.8 -> 1`|
 |||
+|**Извлечение корня**||
+|`sqrt(number: float): float`|Извлечь *квадратный* корень|
+|`cbrt(number: float): float`|Извлечь *кубический* корень|
+|||
 |**Преобразование**||
 |`toInt(variant: any): int`|Преобразовать в `int`|
 |`toFloat(variant: any): float`|Преобразовать в `float`|
