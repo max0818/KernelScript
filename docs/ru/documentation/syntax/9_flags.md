@@ -8,3 +8,4 @@
 
 - 🧩 [Typing](flags/Typing.md)
 - 📃 [Console](flags/Console.md)
+- 🔢 [Math](flags/Math.md)
