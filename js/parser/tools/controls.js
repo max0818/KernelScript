@@ -70,17 +70,18 @@ class ParserControls extends ParserBase {
 		let hasWildcard = false;
 
 		while (!this.isEnd() && this.peek()?.type !== '}') {
+			const peek = this.peek();
 			const caseNode = this.parseMatchCase();
 			cases.push(caseNode);
 
-			if (caseNode.pattern.type === '_') {
+			if (caseNode.pattern.type === 'Wildcard') {
 				if (hasWildcard) {
-					this.error(`В строке ${0} "_" уже был использован до этого`);
+					this.error(`В строке ${peek?.row} "_" уже был использован до этого`);
 				}
 
 				hasWildcard = true;
 			} else if (hasWildcard) {
-				this.error(`В строке ${0} case с "_" должен быть последним, после которого больше ничего не идёт`);
+				this.error(`В строке ${peek?.row} case с "_" должен быть последним, после которого больше ничего не идёт`);
 			}
 		}
 
@@ -96,6 +97,29 @@ class ParserControls extends ParserBase {
 
 	parseMatchCase() {
 		this.expect('case', 'case');
+		ParserPosManager.pos++;
+
+		this.expect('(', '(');
+		ParserPosManager.pos++;
+
+		let pattern = null;
+		if (this.peek()?.type === '_') {
+			pattern = {type: 'Wildcard'};
+			ParserPosManager.pos++;
+		} else pattern = new ParserExpressions().parseExpression();
+
+		this.expect(')', ')');
+		ParserPosManager.pos++;
+
+		this.expect('{', '{');
+
+		const body = new ParserStatements().parseBlock();
+
+		return {
+			type: 'MatchCase',
+			pattern,
+			body
+		};
 	}
 
 	// Цикл while

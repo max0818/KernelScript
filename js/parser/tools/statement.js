@@ -36,7 +36,7 @@ class ParserStatements extends ParserBase {
 
 		// Условный оператор match-case
 		if (peek === 'match') {
-			return this.parseMatchStatement();
+			return new ParserControls().parseMatchStatement();
 		}
 
 		// Цикл while
