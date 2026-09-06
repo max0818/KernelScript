@@ -4,7 +4,7 @@ class Lexer {
 	static comparisonSymbols = ['=', '!', '<', '>'];
 	static bitWorkSymbols = ['&', '|', '^', '~'];
 	static parenthesesSymbols = ['(', ')', '[', ']', '{', '}'];
-	static singleOperators = ['.', ',', ':', '?'];
+	static singleOperators = ['.', ',', ':', '?', '_'];
 	static boolWords = ['true', 'false'];
 	static typeWords = [
 		'any',
@@ -370,7 +370,7 @@ class Lexer {
 		this.pos++;
 
 		if (symbol === '.' && this.peek() === '.' && this.next() === '.') {
-			symbol += '..';
+			symbol = '...';
 			this.pos += 2;
 		}
 
