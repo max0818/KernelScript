@@ -12,10 +12,10 @@
 - `📄` [String](flags/String.md)
 - `📙` [Array](flags/Array.md)
 - `📚` [Object](flags/Object.md)
-- `📚` [JSON](flags/JSON.md)
+- `🔃` [JSON](flags/JSON.md)
 
-### Низкоуровневые
+### Низкоуровневые (в разработке)
 
 - `⚙️` [Navigator](flags/Navigator.md)
-- `⚙️` [CPU](flags/CPU.md)
-- `⚙️` [RAM](flags/RAM.md)
+- `🔢` [CPU](flags/CPU.md)
+- `🗄️` [RAM](flags/RAM.md)
