@@ -6,6 +6,6 @@
 
 ### Список
 
-- 🧩 [Typing](flags/Typing.md)
+- `🧩` [Typing](flags/Typing.md)
 - `>_` [Console](flags/Console.md)
-- 🔢 [Math](flags/Math.md)
+- `🔢` [Math](flags/Math.md)
