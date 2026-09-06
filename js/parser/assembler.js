@@ -33,9 +33,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-while (true) {
-	break;
-}
+
 
 `;
 
