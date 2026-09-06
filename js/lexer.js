@@ -103,10 +103,7 @@ class Lexer {
 		else if (peek === '/' && next === '*') this.commentLinesChecker();
 
 		// Числа иной системы счисления
-		else if (
-			peek === '0' &&
-			(next === 'b' || next === 'o' || next === 'x')
-		) this.differentNumberChecker();
+		else if (peek === '0' && ['b', 'o', 'x'].includes(next)) this.differentNumberChecker();
 
 		// Числа
 		else if (peek.match(/[0-9]+/)) this.numberChecker();
@@ -232,6 +229,28 @@ class Lexer {
 			while (!this.isEnd() && this.peek().match(/[0-9]+/)) {
 				number += this.peek();
 				this.pos++;
+			}
+
+		}
+
+		if (this.peek() === 'e') {
+			number += 'e';
+			this.pos++;
+
+			while (!this.isEnd() && this.peek().match(/[0-9]+/)) {
+				number += this.peek();
+				this.pos++;
+			}
+
+			if (this.peek() === '.') {
+				number += '.';
+				type = 'float';
+				this.pos++;
+
+				while (!this.isEnd() && this.peek().match(/[0-9]+/)) {
+					number += this.peek();
+					this.pos++;
+				}
 			}
 		}
 
