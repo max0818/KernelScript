@@ -69,7 +69,7 @@ match (y) {
 		y = 'name'
 	}
 
-	case _ {
+	case (_) {
 		y = null
 	}
 }
