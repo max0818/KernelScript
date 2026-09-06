@@ -1,4 +1,4 @@
-[Назад](../Navigator.md)
+[Назад](../9_flags.md)
 
 ## RAM
 
