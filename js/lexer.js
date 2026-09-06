@@ -281,6 +281,8 @@ class Lexer {
 			if (word === 'null') word = null;
 			else if (word === 'NaN') word = NaN;
 			else if (word === 'Infinity') word = Infinity;
+
+			type = 'type';
 		}
 
 		this.addToken(word, type, this.row);

@@ -33,7 +33,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-1e4
+var t: null = null
 
 `;
 
