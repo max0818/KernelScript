@@ -4,13 +4,7 @@
 
 - Все флаги всегда должны быть в начале кода
 
-🧩 [Typing](flags/Typing.md)
-📃 [Console](flags/Console.md)
+### Список
 
-### Console
-
-
-
-### Math
-
-
+- 🧩 [Typing](flags/Typing.md)
+- 📃 [Console](flags/Console.md)
