@@ -33,7 +33,7 @@ class Parser extends ParserBase {
 
 const code = `
 
-if (5) {t;}
+
 
 `;
 

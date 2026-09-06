@@ -51,9 +51,52 @@ class ParserControls extends ParserBase {
 	}
 
 	// match-case
-	parseMatchStatement() {}
+	parseMatchStatement() {
+		this.expect('match', 'match');
+		ParserPosManager.pos++;
 
-	parseMatchCase() {}
+		this.expect('(', '(');
+		ParserPosManager.pos++;
+
+		const test = new ParserExpressions().parseExpression();
+
+		this.expect(')', ')');
+		ParserPosManager.pos++;
+
+		this.expect('{', '{');
+		ParserPosManager.pos++;
+
+		const cases = [];
+		let hasWildcard = false;
+
+		while (!this.isEnd() && this.peek()?.type !== '}') {
+			const caseNode = this.parseMatchCase();
+			cases.push(caseNode);
+
+			if (caseNode.pattern.type === '_') {
+				if (hasWildcard) {
+					this.error(`В строке ${0} "_" уже был использован до этого`);
+				}
+
+				hasWildcard = true;
+			} else if (hasWildcard) {
+				this.error(`В строке ${0} case с "_" должен быть последним, после которого больше ничего не идёт`);
+			}
+		}
+
+		this.expect('}', '}');
+		ParserPosManager.pos++;
+
+		return {
+			type: 'MatchStatement',
+			test,
+			cases
+		};
+	}
+
+	parseMatchCase() {
+		this.expect('case', 'case');
+	}
 
 	// Цикл while
 	parseWhileStatement() {}
