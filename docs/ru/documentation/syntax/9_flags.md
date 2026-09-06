@@ -7,5 +7,5 @@
 ### Список
 
 - 🧩 [Typing](flags/Typing.md)
-- 📃 [Console](flags/Console.md)
+- `>_` [Console](flags/Console.md)
 - 🔢 [Math](flags/Math.md)
