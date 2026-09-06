@@ -11,7 +11,34 @@ class ParserClasses extends ParserBase {
 	parseClassBody() {}
 
 	// Конструктор
-	parseClassConstructor() {}
+	parseClassConstructor() {
+		this.expect('init', 'init');
+		ParserPosManager.pos++;
+
+		this.expect('(', '(');
+		ParserPosManager.pos++;
+
+		const params = new ParserFunctions().parseFunctionParams();
+
+		this.expect(')', ')');
+		ParserPosManager.pos++;
+
+		if (this.peek()?.type === ':') {
+			this.error(`В строке ${this.peek()?.row} конструктор не может иметь тип возврата`);
+		}
+
+		const body = new ParserStatements().parseBlock();
+
+		return {
+			type: 'MethodDefinition',
+			key: 'init',
+			params,
+			returnType: 'any',
+			body,
+			isPrivate: false,
+			isStatic: false
+		};
+	}
 
 	// Поле
 	parseClassField() {
