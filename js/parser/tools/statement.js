@@ -41,7 +41,7 @@ class ParserStatements extends ParserBase {
 
 		// Цикл while
 		if (peek === 'while') {
-			return this.parseWhileStatement();
+			return new ParserControls().parseWhileStatement();
 		}
 
 		// Инструкция continue
