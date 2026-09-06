@@ -72,7 +72,7 @@ class ParserFunctions extends ParserBase {
 			}
 
 			if (isRest && this.peek()?.type === ',') {
-				this.error(`В строке ${this.peek()?.row} rest-параметр ${name} должен быть последним`);
+				this.error(`В строке ${this.peek()?.row} rest-параметр ${name} должен быть последним и после него не должны идти параметры`);
 			}
 
 			params.push({

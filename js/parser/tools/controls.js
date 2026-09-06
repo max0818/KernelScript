@@ -123,5 +123,10 @@ class ParserControls extends ParserBase {
 	}
 
 	// Цикл while
-	parseWhileStatement() {}
+	parseWhileStatement() {
+		this.expect('while', 'while');
+		ParserPosManager.pos++;
+
+		//
+	}
 }
