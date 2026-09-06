@@ -1,7 +1,10 @@
 class ParserExpressions extends ParserBase {
 	static COMPOUND_TYPES = ['array', 'object'];
 	static FUNCTION_TYPES = ['function'];
-	static SIMPLE_TYPES = ['null', 'NaN', 'Infinity', 'any', 'bool', 'int', 'float', 'string'];
+	static SIMPLE_TYPES = [
+		'null', 'NaN', 'Infinity',
+		'any', 'bool', 'int', 'float', 'string'
+	];
 
 	constructor() {
 		super();
