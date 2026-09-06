@@ -10,3 +10,4 @@
 - `>_` [Console](flags/Console.md)
 - `🔢` [Math](flags/Math.md)
 - `📄` [String](flags/String.md)
+- `📙` [Array](flags/Array.md)
