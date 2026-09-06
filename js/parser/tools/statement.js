@@ -158,6 +158,29 @@ class ParserStatements extends ParserBase {
 		};
 	}
 
+	// Continue
+	parseContinueStatement() {
+		this.expectType('continue');
+
+		ParserPosManager.pos++;
+
+		if (this.peek()?.type === ';') ParserPosManager.pos++;
+
+		return {type: 'ContinueStatement'};
+	}
+
+	// Break
+	parseBreakStatement() {
+		this.expectType('break');
+
+		ParserPosManager.pos++;
+
+		if (this.peek()?.type === ';') ParserPosManager.pos++;
+
+		return {type: 'BreakStatement'};
+	}
+
+	// Возврат функции или метода
 	parseReturnStatement() {
 		this.expectType('return');
 
