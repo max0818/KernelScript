@@ -13,3 +13,4 @@
 - `📙` [Array](flags/Array.md)
 - `📚` [Object](flags/Object.md)
 - `📚` [JSON](flags/JSON.md)
+- `⚙️` [System](flags/System.md)
