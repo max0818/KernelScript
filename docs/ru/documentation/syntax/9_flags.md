@@ -13,4 +13,9 @@
 - `📙` [Array](flags/Array.md)
 - `📚` [Object](flags/Object.md)
 - `📚` [JSON](flags/JSON.md)
+
+### Низкоуровневые
+
 - `⚙️` [Navigator](flags/Navigator.md)
+- `⚙️` [CPU](flags/CPU.md)
+- `⚙️` [RAM](flags/RAM.md)
