@@ -127,6 +127,20 @@ class ParserControls extends ParserBase {
 		this.expect('while', 'while');
 		ParserPosManager.pos++;
 
-		//
+		this.expect('(', '(');
+		ParserPosManager.pos++;
+
+		const test = new ParserExpressions().parseExpression();
+
+		this.expect(')', ')');
+		ParserPosManager.pos++;
+
+		const body = new ParserStatements().parseBlock();
+
+		return {
+			type: 'WhileStatement',
+			test,
+			body
+		};
 	}
 }
