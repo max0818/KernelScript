@@ -4,5 +4,21 @@ class ParserClasses extends ParserBase {
 	}
 
 
-	//
+	// Класс
+	parseClassDeclaration() {}
+
+	// Тело
+	parseClassBody() {}
+
+	// Конструктор
+	parseClassConstructor() {}
+
+	// Поле
+	parseClassField() {}
+
+	// Метод
+	parseClassMethod() {}
+
+	// Наследование
+	parseClassExtends() {}
 }
