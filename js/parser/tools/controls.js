@@ -22,7 +22,7 @@ class ParserControls extends ParserBase {
 
 	// if-else
 	parseIfStatement() {
-		this.expect('if', 'if');
+		this.expectType('if', 'elif');
 		ParserPosManager.pos++;
 
 		this.expect('(', '(');
@@ -34,6 +34,20 @@ class ParserControls extends ParserBase {
 		ParserPosManager.pos++;
 
 		const consequent = new ParserStatements().parseBlock();
+
+		let alternate = null;
+		if (this.peek()?.type === 'elif') alternate = this.parseIfStatement();
+		else if (this.peek()?.type === 'else') {
+			ParserPosManager.pos++;
+			alternate = new ParserStatements().parseBlock();
+		}
+
+		return {
+			type: 'IfStatement',
+			test,
+			consequent,
+			alternate
+		};
 	}
 
 	// match-case
