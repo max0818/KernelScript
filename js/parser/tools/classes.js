@@ -13,7 +13,7 @@ class ParserClasses extends ParserBase {
 		const id = this.peek().value;
 		ParserPosManager.pos++;
 
-		let superClass = null;
+		let superClass = 'null';
 		if (this.peek()?.type === 'extends') {
 			ParserPosManager.pos++;
 
@@ -155,7 +155,7 @@ class ParserClasses extends ParserBase {
 			typeAnnotation = new ParserExpressions().parseTypeAnnotation();
 		}
 
-		let value = null;
+		let value = 'null';
 		if (this.peek()?.type === '=') {
 			ParserPosManager.pos++;
 			value = new ParserExpressions().parseExpression();

@@ -71,7 +71,7 @@ class ParserFunctions extends ParserBase {
 				typeAnnotation = new ParserExpressions().parseTypeAnnotation();
 			}
 
-			let defaultValue = null;
+			let defaultValue = 'null';
 			if (this.peek()?.type === '=') {
 				ParserPosManager.pos++;
 				defaultValue = new ParserExpressions().parseExpression();

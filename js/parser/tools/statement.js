@@ -105,7 +105,7 @@ class ParserStatements extends ParserBase {
 			typeAnnotation = new ParserExpressions().parseTypeAnnotation();
 		}
 
-		let init = null;
+		let init = 'null';
 		if (this.peek()?.type === '=') {
 			ParserPosManager.pos++;
 			init = new ParserExpressions().parseExpression();
@@ -195,7 +195,7 @@ class ParserStatements extends ParserBase {
 
 		ParserPosManager.pos++;
 
-		let argument = null;
+		let argument = 'null';
 		if ([';', '}'].includes(this.peek()?.type)) {
 			argument = new ParserExpressions().parseExpression();
 		}
