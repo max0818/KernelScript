@@ -570,6 +570,6 @@ class ParserExpressions extends ParserBase {
 			type: 'TypeAnnotation',
 			name,
 			subNames
-		}
+		};
 	}
 }
