@@ -3,6 +3,7 @@ class InterpreterBase {
 		this.errors = [];
 		this.warnings = [];
 		this.debugMode = false;
+		this.autoTypingEnabled = true;
 	}
 
 	// Ошибка
@@ -48,6 +49,44 @@ class InterpreterBase {
 	// Включение и отключение отладки
 	setDebugMode(isEnabled = false) {
 		this.debugMode = isEnabled;
+	}
+
+	// Работа с типами
+
+	// Определить тип значения
+	inferType(value) {
+		if (value === 'null') return 'any';
+
+		if (typeof value === 'boolean') return 'bool';
+		if (typeof value === 'number') {
+			if (Number.isInteger(value)) return 'int';
+			return 'float';
+		}
+
+		if (typeof value === 'string') return 'string';
+		if (Array.isArray(value)) return 'array';
+		if (typeof value === 'object') return 'object';
+
+		if (typeof value === 'function') return 'function';
+
+		return 'any'
+	}
+
+	// Получение нулевого значения для каждого типа
+	getZeroValue(typeName) {
+		if (typeName === 'any') return 'null';
+
+		if (typeName === 'bool') return false;
+		if (typeName === 'int') return 0;
+		if (typeName === 'float') return 0.0;
+
+		if (typeName === 'string') return '';
+		if (typeName === 'array') return [];
+		if (typeName === 'object') return {};
+
+		if (typeName === 'function') return () => {};
+
+		return 'null';
 	}
 
 	// Вспомогательные методы
