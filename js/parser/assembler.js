@@ -22,19 +22,9 @@ class Parser extends ParserBase {
 			this.parse(this.ast);
 			++step;
 		}
-
-		console.log(JSON.stringify(this.ast.value, null, 2));
 	}
 
 	parse(parent) {
 		parent.value.push(this.statements.parseStatement());
 	}
 }
-
-const code = `
-
-
-
-`;
-
-new Parser(code);
