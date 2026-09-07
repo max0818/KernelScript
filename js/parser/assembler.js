@@ -33,7 +33,9 @@ class Parser extends ParserBase {
 
 const code = `
 
-class
+class max {
+	static f
+}
 
 `;
 

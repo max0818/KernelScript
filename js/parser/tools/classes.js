@@ -84,15 +84,15 @@ class ParserClasses extends ParserBase {
 			}
 
 			this.error(`Неожиданный токен в теле класса: ${peek.value} (${peek.type}) на строке ${peek.row}`);
-
-			this.expect('}', '}');
-			ParserPosManager.pos++;
-
-			return {
-				type: 'ClassBody',
-				body
-			};
 		}
+
+		this.expect('}', '}');
+		ParserPosManager.pos++;
+
+		return {
+			type: 'ClassBody',
+			body
+		};
 	}
 
 	// Конструктор
