@@ -21,7 +21,64 @@ var x: int
 const y: float = 3.14
 ```
 - Указывать тип параметрам функций и методов
+```ks
+fn isGreater(a: int, b: int): bool {
+	return a > b
+}
+```
 - Указывать тип rest-параметрам функций и методов
+```ks
+flag Array
+
+fn add(...numbers: float): float {
+	if (numbers.size > 1) {
+		var temp: float = 0
+
+		var i: int = 1
+		while (i < numbers.size) {
+			temp += numbers[i]
+			i++
+		}
+
+		return temp
+	} else if (numbers.size === 1) {
+		return numbers[0]
+	} else {
+		return 0
+	}
+}
+```
 - Указывать тип возврата функциям
+```ks
+flag Console
+
+fn log(message: string): bool {
+	if (not message) return false
+
+	const tempMessage: string = '[LOG] ' + message
+
+	print(tempMessage)
+	return tempMessage
+}
+```
 - Указывать вложенные типы в составных типах
+```ks
+var data: array<int, string, bool> = [
+	'KernelScript',
+	67,
+	true
+]
+```
 - Нельзя использовать тип `any`
+```ks
+flag Typing
+
+Typing.disableAutoTyping()
+
+
+# Неправильно:
+
+var x: any
+
+const y: array<any> = ['text', 123]
+```
