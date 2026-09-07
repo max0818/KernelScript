@@ -59,7 +59,7 @@ class InterpreterBase {
 			value === null ||
 			value === 0 ||
 			value === '' ||
-			['null', 'NaN', 'Infinity'].includes(value)
+			value === 'null'
 		) return false;
 		return true;
 	}
@@ -105,8 +105,6 @@ class InterpreterBase {
 	getGlobalConstants() {
 		return {
 			'null': 'null',
-			'NaN': 'NaN',
-			'Infinity': 'Infinity',
 			'true': true,
 			'false': false
 		};
@@ -114,7 +112,7 @@ class InterpreterBase {
 
 	// Проверка глобальной константы
 	isGlobalConstant(name) {
-		return ['null', 'NaN', 'Infinity', true, false].includes(name);
+		return ['null', true, false].includes(name);
 	}
 
 	getGlobalConstant(name) {
