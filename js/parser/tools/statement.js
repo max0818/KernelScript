@@ -94,7 +94,12 @@ class ParserStatements extends ParserBase {
 		const id = this.peek().value;
 		ParserPosManager.pos++;
 
-		let typeAnnotation = 'any';
+		let typeAnnotation = {
+			type: 'TypeAnnotation',
+			name: 'any',
+			subNames: []
+		};
+
 		if (this.peek()?.type === ':') {
 			ParserPosManager.pos++;
 			typeAnnotation = new ParserExpressions().parseTypeAnnotation();
