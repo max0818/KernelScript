@@ -1,10 +1,7 @@
 class ParserExpressions extends ParserBase {
 	static COMPOUND_TYPES = ['array', 'object'];
 	static FUNCTION_TYPES = ['function'];
-	static SIMPLE_TYPES = [
-		'null', 'NaN', 'Infinity',
-		'any', 'bool', 'int', 'float', 'string'
-	];
+	static SIMPLE_TYPES = ['any', 'bool', 'int', 'float', 'string'];
 
 	constructor() {
 		super();
@@ -253,9 +250,9 @@ class ParserExpressions extends ParserBase {
 		}
 
 		// Тип-значение
-		if (['null', 'NaN', 'Infinity'].includes(peek.value + '')) {
+		if (peek.type === 'null') {
 			ParserPosManager.pos++;
-			return {type: 'TypeValueExpression', name: peek.value + ''};
+			return {type: 'NullExpression', name: peek.value};
 		}
 
 		// This
