@@ -64,6 +64,10 @@ class ParserStatements extends ParserBase {
 			return this.parseReturnStatement();
 		}
 
+		if (peek === 'class') {
+			return new ParserClasses().parseClassDeclaration();
+		}
+
 		// Флаг
 		if (peek === 'flag') {
 			return new ParserControls().parseFlagDeclaration();
