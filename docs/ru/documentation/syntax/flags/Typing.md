@@ -41,7 +41,7 @@ fn add(...numbers: float): float {
 		}
 
 		return temp
-	} else if (numbers.size === 1) {
+	} elif (numbers.size === 1) {
 		return numbers[0]
 	} else {
 		return 0
