@@ -152,11 +152,7 @@ class ParserClasses extends ParserBase {
 
 		if (this.peek()?.type === ':') {
 			ParserPosManager.pos++;
-
-			this.expectType('type');
 			typeAnnotation = new ParserExpressions().parseTypeAnnotation();
-			
-			ParserPosManager.pos++;
 		}
 
 		let value = null;
@@ -204,7 +200,12 @@ class ParserClasses extends ParserBase {
 		this.expect(')', ')');
 		ParserPosManager.pos++;
 
-		let returnType = 'any';
+		let returnType = {
+			type: 'TypeAnnotation',
+			name: 'any',
+			subNames: []
+		};
+
 		if (this.peek()?.type === ':') {
 			ParserPosManager.pos++;
 			returnType = new ParserExpressions().parseTypeAnnotation();
