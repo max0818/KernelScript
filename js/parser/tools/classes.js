@@ -144,6 +144,21 @@ class ParserClasses extends ParserBase {
 		const key = this.peek().value;
 		ParserPosManager.pos++;
 
+		let typeAnnotation = {
+			type: 'TypeAnnotation',
+			name: 'any',
+			subNames: []
+		};
+
+		if (this.peek()?.type === ':') {
+			ParserPosManager.pos++;
+
+			this.expectType('type');
+			typeAnnotation = new ParserExpressions().parseTypeAnnotation();
+			
+			ParserPosManager.pos++;
+		}
+
 		let value = null;
 		if (this.peek()?.type === '=') {
 			ParserPosManager.pos++;
@@ -156,6 +171,7 @@ class ParserClasses extends ParserBase {
 			type: 'ClassProperty',
 			key,
 			value,
+			typeAnnotation,
 			isPrivate,
 			isStatic
 		};
