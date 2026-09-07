@@ -18,7 +18,6 @@ class Lexer {
 	];
 	static valueWords = [
 		'null',
-		'NaN',
 		'Infinity'
 	];
 	static keyWords = [
@@ -278,11 +277,8 @@ class Lexer {
 			type = 'bool';
 		} else if (Lexer.typeWords.includes(word)) type = 'type';
 		else if (Lexer.valueWords.includes(word)) {
-			if (word === 'null') word = null;
-			else if (word === 'NaN') word = NaN;
-			else if (word === 'Infinity') word = Infinity;
-
-			type = 'type';
+			if (word === 'null') type = word;
+			else if (word === 'Infinity') type = 'float';
 		}
 
 		this.addToken(word, type, this.row);
