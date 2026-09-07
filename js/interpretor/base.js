@@ -121,7 +121,9 @@ class InterpreterBase {
 		const constants = this.getGlobalConstants();
 
 		if (name in constants) {
-			
+			return constants[name]
 		}
+
+		return undefined;
 	}
 }
