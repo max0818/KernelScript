@@ -7,7 +7,8 @@
 |**Метод**|**Описание**|
 |-|-|
 |`disableAutoTyping(): bool`|Отключение автоматической проверки типов|
-|`typeOf(value: any, expectType: string): string`|Получение типа|
+|`typeOf(value: any): string`|Получение типа|
+|`expectType(value: any, type: string): bool`|Получение типа|
 
 ### Что требуется после вызова метода disableAutoTyping:
 
