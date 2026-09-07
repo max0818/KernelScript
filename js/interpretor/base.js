@@ -100,4 +100,28 @@ class InterpreterBase {
 	}
 
 	// Утилиты для работы с AST
+
+	// Получить глобальные константы
+	getGlobalConstants() {
+		return {
+			'null': 'null',
+			'NaN': 'NaN',
+			'Infinity': 'Infinity',
+			'true': true,
+			'false': false
+		};
+	}
+
+	// Проверка глобальной константы
+	isGlobalConstant(name) {
+		return ['null', 'NaN', 'Infinity', true, false].includes(name);
+	}
+
+	getGlobalConstant(name) {
+		const constants = this.getGlobalConstants();
+
+		if (name in constants) {
+			
+		}
+	}
 }
