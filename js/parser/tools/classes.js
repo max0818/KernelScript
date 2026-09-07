@@ -49,7 +49,7 @@ class ParserClasses extends ParserBase {
 			}
 
 			if (['private', 'static'].includes(peek.type)) {
-				const savePos = ParserPosManager.pos++;
+				const savePos = ParserPosManager.pos;
 				ParserPosManager.pos++;
 
 				if (this.back()?.type === 'private' && this.peek()?.type === 'static') {
