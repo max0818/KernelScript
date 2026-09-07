@@ -5,7 +5,33 @@ class ParserClasses extends ParserBase {
 
 
 	// Класс
-	parseClassDeclaration() {}
+	parseClassDeclaration() {
+		this.expect('class', 'class');
+		ParserPosManager.pos++;
+
+		this.expectType('identifier');
+		const id = this.peek().value;
+		ParserPosManager.pos++;
+
+		let superClass = null;
+		if (this.peek()?.type === 'extends') {
+			ParserPosManager.pos++;
+
+			this.expectType('identifier');
+			superClass = this.peek().value;
+
+			ParserPosManager.pos++;
+		}
+
+		const body = this.parseClassBody();
+
+		return {
+			type: 'ClassDeclaration',
+			id,
+			superClass,
+			body
+		};
+	}
 
 	// Тело
 	parseClassBody() {
