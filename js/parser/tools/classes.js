@@ -8,7 +8,66 @@ class ParserClasses extends ParserBase {
 	parseClassDeclaration() {}
 
 	// Тело
-	parseClassBody() {}
+	parseClassBody() {
+		this.expect('{', '{');
+		ParserPosManager.pos++;
+
+		const body = [];
+
+		while (!this.isEnd() && this.peek()?.type !== '}') {
+			const peek = this.peek();
+
+			if (peek.type === 'init') {
+				body.push(this.parseClassConstructor());
+				continue;
+			}
+
+			if (['private', 'static'].includes(peek.type)) {
+				const savePos = ParserPosManager.pos++;
+				ParserPosManager.pos++;
+
+				if (this.back()?.type === 'private' && this.peek()?.type === 'static') {
+					ParserPosManager.pos++;
+				} else if ((this.back()?.type === 'private' && this.peek()?.type === 'private')) {
+					this.error(`В строке ${this.back()?.row} повторно использован модификатор private`);
+				} else if ((this.back()?.type === 'static' && this.peek()?.type === 'static')) {
+					this.error(`В строке ${this.back()?.row} повторно использован модификатор static`);
+				}
+
+				if (this.peek()?.type === 'init') {
+					this.error(`В строке ${peek.row} конструктор не может иметь модификаторы`);
+				}
+				const isMethod = this.peek()?.type === 'identifier' && this.next()?.type === '(';
+				ParserPosManager.pos = savePos;
+
+				if (isMethod) {
+					body.push(this.parseClassMethod());
+				} else {
+					body.push(this.parseClassField());
+				}
+				continue;
+			}
+
+			if (peek.type === 'identifier') {
+				if (this.next()?.type === '(') {
+					body.push(this.parseClassMethod());
+				} else {
+					body.push(this.parseClassField());
+				}
+				continue;
+			}
+
+			this.error(`Неожиданный токен в теле класса: ${peek.value} (${peek.type}) на строке ${peek.row}`);
+
+			this.expect('}', '}');
+			ParserPosManager.pos++;
+
+			return {
+				type: 'ClassBody',
+				body
+			};
+		}
+	}
 
 	// Конструктор
 	parseClassConstructor() {
@@ -121,7 +180,4 @@ class ParserClasses extends ParserBase {
 			isStatic
 		};
 	}
-
-	// Наследование
-	parseClassExtends() {}
 }
