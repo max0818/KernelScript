@@ -11,7 +11,7 @@ class Interpreter {
 		const visitor = new InterpreterEvaluator();
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
-		//console.log(JSON.stringify(this.ast, null, 2));
+		console.log(JSON.stringify(this.ast, null, 2));
 	}
 }
 
