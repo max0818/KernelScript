@@ -10,6 +10,8 @@ class ParserStatements extends ParserBase {
 			ParserPosManager.pos++;
 		}
 
+		if (this.isEnd()) return;
+
 		const peek = this.peek()?.type;
 
 		// Переменная или константа
