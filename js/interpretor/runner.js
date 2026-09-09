@@ -18,21 +18,9 @@ class Interpreter {
 
 const code = `
 
-var x = 5
+var x: float = 6;
 
-fn add(a: int) {
-	if (a > 5) {
-		x += a
-	}
 
-	fn m() {
-		x += 5
-	}
-
-	m()
-}
-
-add(6)
 
 `;
 
