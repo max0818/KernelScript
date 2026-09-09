@@ -55,4 +55,27 @@ class InterpreterManager {
 	}
 }
 
+class InterpreterBase {
+	constructor() {
+		this.currentClass = null;
+		this.currentFunction = null;
+	}
 
+	// Встроенные базовые методы
+
+	hasFlag(flag) {
+		return InterpreterManager.flags.includes(flag);
+	}
+
+	createEnv(parent = null) {
+		return new InterpreterEnvironment(parent || InterpreterManager.globalEnv);
+	}
+
+	// Методы от InterpreterManager
+
+	error(message, node) {InterpreterManager.error(message, node)}
+	warn(message, node) {InterpreterManager.warn(message, node)}
+
+	log(message) {InterpreterManager.log(message)}
+	setDebugMode(isEnabled) {InterpreterManager.setDebugMode(isEnabled)}
+}
