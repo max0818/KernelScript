@@ -38,7 +38,7 @@ var переменная = функция(аргументы)
 ```ks
 flag Console
 
-fn add(a: int, b: int, c: float): float {
+fn add(a: float, b: float, c: float): float {
 	return a * b / c
 }
 
@@ -65,7 +65,7 @@ fn max(...numbers: float): float {
 		while (i < numbers.size) {
 			if (numbers[i] > temp) {
 				temp = numbers[i]
-				++i
+				i++
 			}
 		}
 
@@ -73,7 +73,9 @@ fn max(...numbers: float): float {
 	}
 }
 
-print(max(1, 543, 654, 94))
+var x: float = max(1, 543, 654, 94)
+
+print(x)
 
 /*
 Вывод консоли:
