@@ -201,7 +201,7 @@ class ParserExpressions extends ParserBase {
 
 	// Унарные операторы
 	parseUnary() {
-		if (!this.isEnd() && ['not', '-', '++', '--', '~'].includes(this.peek().type)) {
+		if (!this.isEnd() && ['not', '-', '~'].includes(this.peek().type)) {
 			const operator = this.peek();
 			ParserPosManager.pos++;
 
