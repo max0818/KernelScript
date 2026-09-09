@@ -6,21 +6,24 @@ class Interpreter {
 	}
 
 	init() {
-		InterpreterManager.init(true);
+		InterpreterManager.init();
 
-		const visitor = new InterpreterEvaluator();
+		const visitor = new InterpreterFlags();
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
-		console.log(JSON.stringify(this.ast, null, 2));
+		//console.log(JSON.stringify(this.ast, null, 2));
 	}
 }
 
 
 const code = `
 
-var x: float = 6;
+flag Console
+flag Typing
 
+var x = 20 * 9 ** 0.5 + 7
 
+print('Aura:', x)
 
 `;
 
