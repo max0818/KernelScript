@@ -114,7 +114,7 @@ class NumberWork {
 	}
 
 	private add() {
-		this.result = a + b
+		this.result = this.a + this.b
 	}
 
 	get() {
@@ -124,6 +124,8 @@ class NumberWork {
 
 const add = new NumberWork(5, 6)
 var added = add.get()
+
+print(added)
 
 /*
 Вывод консоли:
