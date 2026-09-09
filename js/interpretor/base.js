@@ -64,6 +64,51 @@ class InterpreterBase {
 		return new InterpreterEnvironment(parent || InterpreterManager.globalEnv);
 	}
 
+	getZeroValue(type) {
+		switch (type) {
+			case 'any': return 'null';
+			case 'bool': return false;
+			case 'int': return 0;
+			case 'float': return 0.0;
+			case 'string': return "";
+			case 'array': return [];
+			case 'object': return {};
+			default: return 'null';
+		}
+	}
+
+	typeOf(value) {
+		if (value === 'null') return 'any';
+
+		if (typeof value === 'boolean') return 'bool';
+		if (typeof value === 'number') {
+			if (Number.isInteger(value)) return 'int';
+			return 'float';
+		}
+
+		if (typeof value === 'string') return 'string';
+		if (Array.isArray(value)) return 'array';
+		if (typeof value === 'object') return 'object';
+
+		return 'any';
+	}
+
+	expectType(actualType, expectedType) {
+		if (expectedType === 'any') return true;
+
+		if (expectedType === 'float' && actualType === 'int') return true;
+
+		return expectedType === actualType;
+	}
+
+	compTypeOf(value) {
+		// WIP
+	}
+
+	expectCompType(value) {
+		// WIP
+	}
+
 	// Методы от InterpreterManager
 
 	error(message, node) {InterpreterManager.error(message, node)}

@@ -12,14 +12,25 @@ class Interpreter {
 
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
-		console.log(JSON.stringify(this.ast, null, 2));
+		//console.log(JSON.stringify(this.ast, null, 2));
 	}
 }
 
 
 const code = `
 
-const x: int = ''
+var x: float = 5
+x = 6.5
+
+if (5 == 5) {
+	var y = 5
+
+	y += 6
+} else {
+	x -= 6
+}
+
+#y -= 5
 
 `;
 

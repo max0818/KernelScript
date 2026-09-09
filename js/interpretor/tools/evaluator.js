@@ -3,21 +3,9 @@ class InterpreterEvaluator extends InterpreterVisitor {
 		super();
 	}
 
-	visitExpressionStatement(node, env) {
-		this.log('Вызов visitExpressionStatement');
-
-		return this.visit(node.expression, env);
-	}
-
-	visitLiteral(node) {
-		if (['"', "'", '`'].includes(node.value[0])) {
-			return node.value.slice(1, -1);
-		}
-
-		return node.value;
-	}
-
 	// --- Бинарные операции ---
+
+	// Общий метод бинарных операций
 	visitBinaryExpression(node, env) {
 		this.log('Вызов visitBinaryExpression');
 
@@ -26,8 +14,13 @@ class InterpreterEvaluator extends InterpreterVisitor {
 		return this.applyOperator(left, right, node.operator);
 	}
 
+	// Метод применения оператора бинарной операции
 	applyOperator(left, right, operator) {
 		this.log(`Вызов applyOperator: ${left} ${operator} ${right}`);
+
+		if (right === 0 && ['/', '%'].includes(operator)) {
+			throw new Error('На ноль делить нельзя');
+		}
 
 		switch (operator) {
 			case '+': return left + right;
@@ -53,6 +46,9 @@ class InterpreterEvaluator extends InterpreterVisitor {
 		}
 	}
 
+	// --- Переменные ---
+
+	// Объявление переменной
 	visitVariableDeclaration(node, env) {
 		this.log('Вызов visitVariableDeclaration');
 
@@ -62,5 +58,49 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 		const value = node.init !== 'null' ? this.visit(node.init, env) : null;
 
+		env.declare(node.id, node.typeAnnotation, value, node.kind);
+
+		return value;
+	}
+
+	// Присвоение значения
+	visitAssignmentExpression(node, env) {
+		this.log('Вызов visitAssignmentExpression');
+
+		const right = this.visit(node.right, env);
+
+		if (['+=', '-=', '*=', '/=', '%=', '**='].includes(node.operator)) {
+			const left = this.visit(node.left, env);
+			const tempOperator = node.operator.slice(0, -1);
+			const newValue = this.applyOperator(left, right, tempOperator);
+
+			env.set(node.left.name, newValue);
+
+			return newValue;
+		}
+
+		if (node.left.type === 'Identifier') {
+			env.set(node.left.name, right);
+			return right;
+		}
+
+		this.error(`Можно присвоить значение только значению с типом identifier`, node);
+	}
+
+	// --- Условные операторы ---
+
+	// if-else
+	visitIfStatement(node, env) {
+		const test = this.visit(node.test, env);
+
+		if (test) {
+			return this.visit(node.consequent, env);
+		} else {
+			return this.visit(node.alternate, env);
+		}
+	}
+
+	visitMatchStatement(node, env) {
+		// WIP
 	}
 }
