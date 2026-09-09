@@ -506,7 +506,10 @@ class ParserExpressions extends ParserBase {
 		this.expect('new', 'new');
 		ParserPosManager.pos++;
 
-		const callee = {type: 'NewExpression', name: this.peek()?.value};
+		this.expectType('identifier');
+		const name = this.peek().value;
+
+		const callee = {type: 'NewExpression', name};
 
 		ParserPosManager.pos++;
 
