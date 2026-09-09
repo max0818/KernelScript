@@ -1,11 +1,4 @@
 class InterpreterManager {
-	static errors = [];
-	static warnings = [];
-	static debugMode = false;
-	static autoTypingEnabled = true;
-	static flags = [];
-	static globalEnv = null;
-
 	// --- Инициализация ---
 
 	// Запуск
@@ -21,7 +14,7 @@ class InterpreterManager {
 		this.debugMode = false;
 		this.autoTypingEnabled = true;
 		this.flags = [];
-		this.globalEnv = null;
+		this.globalEnv = new InterpreterEnvironment();
 	}
 
 	// --- Ошибки и предупреждения ---
@@ -67,7 +60,7 @@ class InterpreterBase {
 		return InterpreterManager.flags.includes(flag);
 	}
 
-	createEnv(parent = null) {
+	createEnv(parent) {
 		return new InterpreterEnvironment(parent || InterpreterManager.globalEnv);
 	}
 
