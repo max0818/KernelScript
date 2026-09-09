@@ -21,6 +21,8 @@ class Parser extends ParserBase {
 	}
 
 	parse(parent) {
-		parent.value.push(this.statements.parseStatement());
+		const stmt = this.statements.parseStatement();
+
+		if (stmt) parent.value.push(stmt);
 	}
 }
