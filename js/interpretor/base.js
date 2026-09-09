@@ -100,11 +100,11 @@ class InterpreterBase {
 			return 'float';
 		}
 
+		if (value?.type === 'function') return 'function';
+
 		if (typeof value === 'string') return 'string';
 		if (Array.isArray(value)) return 'array';
 		if (typeof value === 'object') return 'object';
-
-		if (value.type === 'function') return 'function';
 
 		return 'any';
 	}

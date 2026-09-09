@@ -11,18 +11,28 @@ class Interpreter {
 		const visitor = new InterpreterEvaluator();
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
-		console.log(JSON.stringify(this.ast, null, 2));
+		//console.log(JSON.stringify(this.ast, null, 2));
 	}
 }
 
 
 const code = `
 
-fn add(...a: int, ...b: int)/*: bool*/ {/*
-	if (a < 5) {
-		return true
-	}*/
+var x = 5
+
+fn add(a: int) {
+	if (a > 5) {
+		x += a
+	}
+
+	fn m() {
+		x += 5
+	}
+
+	m()
 }
+
+add(6)
 
 `;
 

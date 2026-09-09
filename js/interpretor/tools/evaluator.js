@@ -156,12 +156,17 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Объявление функции
 	visitFunctionDeclaration(node, env) {
+		this.log('Вызов visitFunctionDeclaration');
+
 		const fn = this.createFunction(node, env);
-		env.declare(node.id, 'function', fn, 'const');
+		env.declare(node.id, {name: 'function'}, fn, 'const');
 		return fn;
 	}
 
+	// Создание функции
 	createFunction(node, env) {
+		this.log('Вызов createFunction');
+
 		return {
 			type: 'function',
 			params: node.params,
@@ -170,14 +175,57 @@ class InterpreterEvaluator extends InterpreterVisitor {
 			closure: env,
 			call: (args, thisBinding = null) => {
 				const newEnv = this.createEnv(env);
-				newEnv.thisBinding = thisBinding || env.get('this') || null;
+				newEnv.thisBinding = thisBinding || null;
 
-				for (const param of node.params) {
+				for (let i = 0; i < node.params.length; i++) {
+					const param = node.params[i];
+
 					if (param.isRest) {
-						const rest = args.slice()
+						const rest = args.slice(i);
+						newEnv.declare(param.name, param.typeAnnotation, rest);
+					} else {
+						newEnv.declare(param.name, param.typeAnnotation, args[i] ?? 'null');
 					}
+				}
+
+				try {
+					const result = this.visit(node.body, newEnv);
+					return result;
+				} catch (e) {
+					if (e instanceof ReturnSignal) {
+						return e.value;
+					}
+
+					throw e;
 				}
 			}
 		};
+	}
+
+	// Вызов функции
+	visitCallExpression(node, env) {
+		this.log('Вызов visitCallExpression');
+
+		const callee = this.visit(node.callee, env);
+		const args = node.arguments.map(arg => this.visit(arg, env));
+
+		if (typeof callee === 'function' && !callee.type) {
+			return callee(...args);
+		}
+
+		if (callee.type === 'function') {
+			return callee.call(args);
+		}
+
+		this.error('Вызываемый объект не является функцией', node);
+	}
+
+	// Return
+	visitReturnStatement(node, env) {
+		this.log('Вызов visitReturnStatement');
+
+		const value = node.argument && node.argument !== 'null' ? this.visit(node.argument, env) : null;
+
+		throw new ReturnSignal(value);
 	}
 }
