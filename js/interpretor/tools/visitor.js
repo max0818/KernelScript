@@ -4,8 +4,6 @@ class InterpreterVisitor extends InterpreterBase {
 	}
 
 	visit(node, env) {
-		this.log(`Вызов visit`);
-
 		if (!node) return null;
 
 		const methodName = `visit${node.type}`;
@@ -20,7 +18,7 @@ class InterpreterVisitor extends InterpreterBase {
 	}
 
 	visitProgram(node, env) {
-		this.log(`Вызов visitProgram`);
+		this.log('Вызов visitProgram');
 
 		let result = null;
 
