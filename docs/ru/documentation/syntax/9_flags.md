@@ -8,6 +8,7 @@
 
 - `🧩` [Typing](flags/Typing.md)
 - `>_` [Console](flags/Console.md)
+- `🕑` [Time](flags/Time.md)
 - `🔢` [Math](flags/Math.md)
 - `📄` [String](flags/String.md)
 - `📙` [Array](flags/Array.md)
