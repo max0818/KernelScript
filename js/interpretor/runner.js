@@ -19,7 +19,7 @@ class Interpreter {
 
 const code = `
 
-const x: int = 6
+const x: in = 6
 
 `;
 

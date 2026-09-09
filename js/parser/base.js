@@ -26,7 +26,7 @@ class ParserPosManager {
 		const temp = this.peek()?.type === type && this.peek()?.value === value;
 
 		if (!temp) {
-			this.error(`В строке ${this.back()?.row} ожидалось ${value} (${type}), но был получен: ${this.peek()?.value} (${this.peek()?.type})`);
+			this.error(`В строке ${this.back()?.row} ожидалось "${value}" (${type}), но был получен "${this.peek()?.value}" (${this.peek()?.type})`);
 		}
 	}
 
@@ -34,7 +34,7 @@ class ParserPosManager {
 		const temp = type[0].includes(this.peek()?.type);
 
 		if (!temp) {
-			this.error(`В строке ${this.back()?.row} ожидались тип(ы) (${type}), но был получен: ${this.peek()?.type}`);
+			this.error(`В строке ${this.back()?.row} ожидалось значение с одним из типов: [${type}], но было получено значение "${this.peek()?.value}" с типом "${this.peek()?.type}"`);
 		}
 	}
 
