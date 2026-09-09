@@ -288,6 +288,7 @@ class Lexer {
 
 	stringChecker() {
 		const symbol = this.peek();
+		const row = this.row;
 		let string = symbol;
 		let type = 'string';
 
@@ -298,8 +299,12 @@ class Lexer {
 			this.pos++;
 		}
 
-		this.pos++;
+		if (this.peek() !== symbol) {
+			throw new Error(`В строке ${row} не найден конец строки`);
+		}
+
 		string += symbol;
+		this.pos++;
 
 		this.addToken(string, type, this.row);
 	}
