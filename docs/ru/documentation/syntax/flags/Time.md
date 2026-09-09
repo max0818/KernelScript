@@ -6,7 +6,7 @@
 
 |**Метод**|**Описание**|
 |-|-|
-|`sleep(seconds: float): bool`|Приостановить выполнение|
+|`sleep(seconds: float = 0.0): bool`|Приостановить выполнение|
 |`timeout(function: function<any>, seconds: float = 1.0): bool`|Вызвать функцию через время|
 |`interval(function: function<any>, seconds: float = 1.0, maxSteps = Infinity): bool`|Вызывать функцию каждый раз через время|
 |`stopTimeout(timeout): bool`|Принудительно остановить timeout|
