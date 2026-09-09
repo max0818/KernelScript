@@ -15,12 +15,8 @@ class Parser extends ParserBase {
 	init() {
 		this.statements = new ParserStatements();
 
-		const maxSteps = 500;
-		let step = 0;
-
-		while (!this.isEnd() && step < maxSteps) {
+		while (!this.isEnd()) {
 			this.parse(this.ast);
-			++step;
 		}
 	}
 
