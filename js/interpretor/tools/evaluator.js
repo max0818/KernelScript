@@ -91,6 +91,8 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// if-else
 	visitIfStatement(node, env) {
+		this.log('Вызов visitIfStatement');
+
 		const test = this.visit(node.test, env);
 
 		if (test) {
@@ -100,7 +102,53 @@ class InterpreterEvaluator extends InterpreterVisitor {
 		}
 	}
 
+	// match-case
 	visitMatchStatement(node, env) {
+		this.log('Вызов visitMatchStatement');
+
+		const test = this.visit(node.test, env);
+
+		for (const caseNode of node.cases) {
+			if (caseNode.pattern.type === 'Wildcard') {
+				return this.visit(caseNode.body, env);
+			}
+
+			const patternValue = this.visit(caseNode.pattern, env);
+
+			if (patternValue === test) {
+				return this.visit(caseNode.body, env);
+			}
+		}
+
+		return null;
+	}
+
+	// --- Циклы ---
+
+	// While
+	visitWhileStatement(node, env) {
+		while (this.visit(node.test, env)) {
+			try {
+				this.visit(node.body, env);
+			} catch (e) {
+				if (e instanceof BreakSignal) break;
+				if (e instanceof continueSignal) continue;
+				throw e;
+			}
+		}
+
+		return null;
+	}
+
+	// Break
+	visitBreakStatement() {
 		// WIP
 	}
+
+	// Continue
+	visitContinueStatement() {
+		// WIP
+	}
+
+	// 
 }

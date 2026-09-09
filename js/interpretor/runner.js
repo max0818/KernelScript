@@ -9,7 +9,6 @@ class Interpreter {
 		InterpreterManager.init(true);
 
 		const visitor = new InterpreterEvaluator();
-
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
 		//console.log(JSON.stringify(this.ast, null, 2));
@@ -19,18 +18,15 @@ class Interpreter {
 
 const code = `
 
-var x: float = 5
-x = 6.5
+var x: float = 3
 
-if (5 == 5) {
-	var y = 5
+while (x < 7) {
+	if (x == 6) {
+		break;
+	}
 
-	y += 6
-} else {
-	x -= 6
+	x += 1
 }
-
-#y -= 5
 
 `;
 
