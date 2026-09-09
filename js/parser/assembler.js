@@ -1,6 +1,6 @@
 class Parser extends ParserBase {
 	ast = {
-		type: 'program',
+		type: 'Program',
 		value: []
 	}
 

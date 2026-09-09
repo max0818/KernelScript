@@ -27,4 +27,34 @@ class InterpreterEnvironment extends InterpreterBase {
 
 		throw new Error(`Переменная "${name}" не найдена`);
 	}
+
+	// Дать значение переменной
+	set(name, value) {
+		if (this.constants.includes(name)) {
+			throw new Error(`Переменную "${name}" изменить нельзя, так как она является константой`);
+		}
+
+		if (name in this.variables) {
+			this.variables[name] = value;
+			return true;
+		}
+
+		if (this.parent) {
+			return this.parent.set(name, value);
+		}
+
+		throw new Error(`Переменная "${name}" не найдена`);
+	}
+
+	// Существует ли переменная
+	has(name) {
+		if (name in this.variables) return true;
+		if (this.parent) return this.parent.has(name);
+		return false;
+	}
+
+	// Создать дочернее окружение
+	child() {
+		return new InterpreterEnvironment(this);
+	}
 }

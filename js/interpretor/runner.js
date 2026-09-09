@@ -6,15 +6,20 @@ class Interpreter {
 	}
 
 	init() {
+		InterpreterManager.init();
+
+		const visitor = new InterpreterVisitor();
+
+		visitor.visit(this.ast, InterpreterManager.globalEnv);
+
 		console.log(JSON.stringify(this.ast, null, 2));
-		console.log(this.ast);
 	}
 }
 
 
 const code = `
 
-(x + 5 - 5) * 5
+6 + 5
 
 `;
 

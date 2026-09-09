@@ -9,7 +9,7 @@ class InterpreterManager {
 
 	// Очистка
 	static clean() {
-		this.error = [];
+		this.errors = [];
 		this.warnings = [];
 		this.debugMode = false;
 		this.autoTypingEnabled = true;
