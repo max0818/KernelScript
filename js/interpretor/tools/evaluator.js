@@ -150,5 +150,10 @@ class InterpreterEvaluator extends InterpreterVisitor {
 		// WIP
 	}
 
-	// 
+	// --- Функции ---
+
+	// Объявление функции
+	visitFunctionDeclaration() {
+		//
+	}
 }

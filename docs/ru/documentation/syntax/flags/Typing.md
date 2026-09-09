@@ -52,8 +52,8 @@ fn add(...numbers: float): float {
 ```ks
 flag Console
 
-fn log(message: string): bool {
-	if (not message) return false
+fn log(message: string): string {
+	if (not message) return null
 
 	const tempMessage: string = '[LOG] ' + message
 
