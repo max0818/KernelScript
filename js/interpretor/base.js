@@ -39,7 +39,7 @@ class InterpreterManager {
 
 	// Вывод сообщения
 	static log(message) {
-		if (this.debugMode) console.debug(`[Interpreter] ${message}`);
+		if (this.debugMode) console.log(`[Interpreter] ${message}`);
 	}
 
 	// Включение и отключение отладки

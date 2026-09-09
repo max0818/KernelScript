@@ -6,9 +6,9 @@ class Interpreter {
 	}
 
 	init() {
-		InterpreterManager.init();
+		InterpreterManager.init(true);
 
-		const visitor = new InterpreterVisitor();
+		const visitor = new InterpreterEvaluator();
 
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
@@ -19,7 +19,7 @@ class Interpreter {
 
 const code = `
 
-6 + 5
+var x
 
 `;
 
