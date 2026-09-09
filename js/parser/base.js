@@ -34,7 +34,7 @@ class ParserPosManager {
 		const temp = type[0].includes(this.peek()?.type);
 
 		if (!temp) {
-			this.error(`В строке ${this.back()?.row} ожидались типы (${type}), но был получен: ${this.peek()?.type}`);
+			this.error(`В строке ${this.back()?.row} ожидались тип(ы) (${type}), но был получен: ${this.peek()?.type}`);
 		}
 	}
 
