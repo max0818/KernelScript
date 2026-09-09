@@ -127,12 +127,14 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// While
 	visitWhileStatement(node, env) {
+		this.log('Вызов visitWhileStatement');
+
 		while (this.visit(node.test, env)) {
 			try {
 				this.visit(node.body, env);
 			} catch (e) {
 				if (e instanceof BreakSignal) break;
-				if (e instanceof continueSignal) continue;
+				if (e instanceof ContinueSignal) continue;
 				throw e;
 			}
 		}
@@ -153,7 +155,29 @@ class InterpreterEvaluator extends InterpreterVisitor {
 	// --- Функции ---
 
 	// Объявление функции
-	visitFunctionDeclaration() {
-		//
+	visitFunctionDeclaration(node, env) {
+		const fn = this.createFunction(node, env);
+		env.declare(node.id, 'function', fn, 'const');
+		return fn;
+	}
+
+	createFunction(node, env) {
+		return {
+			type: 'function',
+			params: node.params,
+			body: node.body,
+			returnType: node.returnType,
+			closure: env,
+			call: (args, thisBinding = null) => {
+				const newEnv = this.createEnv(env);
+				newEnv.thisBinding = thisBinding || env.get('this') || null;
+
+				for (const param of node.params) {
+					if (param.isRest) {
+						const rest = args.slice()
+					}
+				}
+			}
+		};
 	}
 }

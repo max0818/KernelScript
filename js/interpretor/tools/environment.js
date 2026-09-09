@@ -70,11 +70,4 @@ class InterpreterEnvironment extends InterpreterBase {
 		if (this.parent) return this.parent.has(name);
 		return false;
 	}
-
-	// Создать дочернее окружение
-	child() {
-		this.log('Создание дочернего окружения');
-
-		return new InterpreterEnvironment(this);
-	}
 }

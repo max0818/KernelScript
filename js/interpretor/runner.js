@@ -11,21 +11,17 @@ class Interpreter {
 		const visitor = new InterpreterEvaluator();
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
-		//console.log(JSON.stringify(this.ast, null, 2));
+		console.log(JSON.stringify(this.ast, null, 2));
 	}
 }
 
 
 const code = `
 
-var x: float = 3
-
-while (x < 7) {
-	if (x == 6) {
-		break;
-	}
-
-	x += 1
+fn add(...a: int, ...b: int)/*: bool*/ {/*
+	if (a < 5) {
+		return true
+	}*/
 }
 
 `;

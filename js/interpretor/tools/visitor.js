@@ -97,7 +97,7 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Блок
 	visitBlockStatement(node, env) {
-		const childEnv = env.child()
+		const childEnv = this.createEnv(env);
 
 		let result = null;
 

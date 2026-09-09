@@ -73,6 +73,20 @@ class InterpreterBase {
 			case 'string': return "";
 			case 'array': return [];
 			case 'object': return {};
+			case 'function': return new InterpreterEvaluator().createFunction({
+				type: 'FunctionDeclaration',
+				id: null,
+				params: [],
+				returnType: {
+					type: 'TypeAnnotation',
+					name: 'any',
+					subNames: []
+				},
+				body: {
+					type: 'BlockStatement',
+					body: []
+				}
+			}, InterpreterManager.globalEnv);
 			default: return 'null';
 		}
 	}
@@ -90,6 +104,8 @@ class InterpreterBase {
 		if (Array.isArray(value)) return 'array';
 		if (typeof value === 'object') return 'object';
 
+		if (value.type === 'function') return 'function';
+
 		return 'any';
 	}
 
@@ -97,6 +113,8 @@ class InterpreterBase {
 		if (expectedType === 'any') return true;
 
 		if (expectedType === 'float' && actualType === 'int') return true;
+
+		if (expectedType === actualType.type) return true;
 
 		return expectedType === actualType;
 	}
