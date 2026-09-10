@@ -175,7 +175,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 			closure: env,
 			call: (args, thisBinding = null) => {
 				const newEnv = this.createEnv(env);
-				newEnv.thisBinding = thisBinding ||  null;
+				newEnv.thisBinding = thisBinding || env.get('this') || null;
 
 				for (let i = 0; i < node.params.length; i++) {
 					const param = node.params[i];
@@ -227,7 +227,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Return
 	visitReturnStatement(node, env) {
-		this.log('Вызов visitReturnStatement');
+		this.log('Вызов Return');
 
 		const value = node.argument && node.argument !== 'null' ? this.visit(node.argument, env) : null;
 

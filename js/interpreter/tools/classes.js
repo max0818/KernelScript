@@ -59,7 +59,7 @@ class InterpreterClasses extends InterpreterFlags {
 					}
 				}
 
-				for (const [ket, method] of Object.entries(methods)) {
+				for (const [key, method] of Object.entries(methods)) {
 					if (!method.isStatic) {
 						instance[key] = this.createMethod(method, instance, env);
 					}
@@ -86,7 +86,7 @@ class InterpreterClasses extends InterpreterFlags {
 			closure: env,
 			call: (args, thisBinding = instance) => {
 				const newEnv = this.createEnv(env);
-				newEnv.thisBinding = thisBinding;
+				newEnv.thisBinding = thisBinding || env.get('this') || null;
 
 				if (thisBinding.__proto__ && thisBinding.__proto__.superClass) {
 					newEnv.declare('super', {
@@ -110,7 +110,13 @@ class InterpreterClasses extends InterpreterFlags {
 
 				for (let i = 0; i < method.params.length; i++) {
 					const param = method.params[i];
-					newEnv.declare(param.name, args[i] ?? 'null');
+					
+					if (param.isRest) {
+						const rest = args.slice(i);
+						newEnv.declare(param.name, param.typeAnnotation, rest);
+					} else {
+						newEnv.declare(param.name, param.typeAnnotation, args[i] ?? 'null');
+					}
 				}
 
 				try {
