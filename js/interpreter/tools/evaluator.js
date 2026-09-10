@@ -184,7 +184,13 @@ class InterpreterEvaluator extends InterpreterVisitor {
 						const rest = args.slice(i);
 						newEnv.declare(param.name, param.typeAnnotation, rest);
 					} else {
-						newEnv.declare(param.name, param.typeAnnotation, args[i] ?? 'null');
+						const defaultValue = this.visit(param.defaultValue, env);
+
+						if (!this.expectType(this.typeOf(defaultValue), param.typeAnnotation.name) && this.typeOf(defaultValue) !== 'any') {
+							throw new Error(`Тип переменной не соответствует типу значения: ${param.typeAnnotation.name} ≠ ${this.typeOf(defaultValue)}`);
+						}
+
+						newEnv.declare(param.name, param.typeAnnotation, args[i] ?? this.visit(param.defaultValue, env) ?? 'null');
 					}
 				}
 
