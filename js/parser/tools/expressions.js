@@ -207,13 +207,6 @@ class ParserExpressions extends ParserBase {
 
 			const argument = this.parseUnary();
 
-			if (
-				argument?.type === 'UnaryExpression' &&
-				['++', '--'].includes(operator?.type)
-			) {
-				this.error(`В строке ${operator?.row} нельзя применять префиксный оператор ${operator?.value}`);
-			}
-
 			return {
 				type: 'UnaryExpression',
 				operator: operator.value,
