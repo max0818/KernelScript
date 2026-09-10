@@ -21,12 +21,12 @@ const code = `
 flag Console
 
 class x {
-	init(a: int = false) {
+	init(a) {
 		print(a)
 	}
 }
 
-new x(null)
+new x()
 
 `;
 

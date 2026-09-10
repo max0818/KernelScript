@@ -115,13 +115,17 @@ class InterpreterClasses extends InterpreterFlags {
 						const rest = args.slice(i);
 						newEnv.declare(param.name, param.typeAnnotation, rest);
 					} else {
-						const defaultValue = this.visit(param.defaultValue, env);
+						let defaultValue = 'null';
 
-						if (!this.expectType(this.typeOf(defaultValue), param.typeAnnotation.name) && this.typeOf(defaultValue) !== 'any') {
-							throw new Error(`Тип переменной не соответствует типу значения: ${param.typeAnnotation.name} ≠ ${this.typeOf(defaultValue)}`);
+						if (param.defaultValue !== 'null') {
+							defaultValue = this.visit(param.defaultValue, env);
+
+							if (!this.expectType(this.typeOf(defaultValue), param.typeAnnotation.name) && this.typeOf(defaultValue) !== 'any') {
+								throw new Error(`Тип переменной не соответствует типу значения: ${param.typeAnnotation.name} ≠ ${this.typeOf(defaultValue)}`);
+							}
 						}
 
-						newEnv.declare(param.name, param.typeAnnotation, args[i] ?? defaultValue ?? 'null');
+						newEnv.declare(param.name, param.typeAnnotation, args[i] ?? defaultValue);
 					}
 				}
 
