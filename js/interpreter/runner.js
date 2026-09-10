@@ -6,9 +6,9 @@ class Interpreter {
 	}
 
 	init() {
-		InterpreterManager.init();
+		InterpreterManager.init(true);
 
-		const visitor = new InterpreterFlags();
+		const visitor = new InterpreterClasses();
 		visitor.visit(this.ast, InterpreterManager.globalEnv);
 
 		//console.log(JSON.stringify(this.ast, null, 2));
@@ -19,11 +19,14 @@ class Interpreter {
 const code = `
 
 flag Console
-flag Typing
 
-var x = 20 * 9 ** 0.5 + 7
+class x {
+	init(a) {
+		print(a)
+	}
+}
 
-print('Aura:', x)
+new x(6)
 
 `;
 

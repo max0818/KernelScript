@@ -7,7 +7,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Общий метод бинарных операций
 	visitBinaryExpression(node, env) {
-		this.log('Вызов visitBinaryExpression');
+		this.log('Вызов Binary');
 
 		const left = this.visit(node.left, env);
 		const right = this.visit(node.right, env);
@@ -50,7 +50,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Объявление переменной
 	visitVariableDeclaration(node, env) {
-		this.log('Вызов visitVariableDeclaration');
+		this.log('Объявление переменной');
 
 		if (node.init === 'null' && node.kind === 'const') {
 			throw new Error(`Константа "${node.id}" должна иметь значение`);
@@ -65,7 +65,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Присвоение значения
 	visitAssignmentExpression(node, env) {
-		this.log('Вызов visitAssignmentExpression');
+		this.log('Вызов Assignment');
 
 		const right = this.visit(node.right, env);
 
@@ -91,7 +91,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// if-else
 	visitIfStatement(node, env) {
-		this.log('Вызов visitIfStatement');
+		this.log('Объявление if-else');
 
 		const test = this.visit(node.test, env);
 
@@ -104,7 +104,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// match-case
 	visitMatchStatement(node, env) {
-		this.log('Вызов visitMatchStatement');
+		this.log('Объявление Match');
 
 		const test = this.visit(node.test, env);
 
@@ -127,7 +127,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// While
 	visitWhileStatement(node, env) {
-		this.log('Вызов visitWhileStatement');
+		this.log('Объявление While');
 
 		while (this.visit(node.test, env)) {
 			try {
@@ -156,7 +156,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Объявление функции
 	visitFunctionDeclaration(node, env) {
-		this.log('Вызов visitFunctionDeclaration');
+		this.log('Объявление функции');
 
 		const fn = this.createFunction(node, env);
 		env.declare(node.id, {name: 'function'}, fn, 'const');
@@ -165,7 +165,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Создание функции
 	createFunction(node, env) {
-		this.log('Вызов createFunction');
+		this.log('Создание функции');
 
 		return {
 			type: 'function',
@@ -175,7 +175,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 			closure: env,
 			call: (args, thisBinding = null) => {
 				const newEnv = this.createEnv(env);
-				newEnv.thisBinding = thisBinding || null;
+				newEnv.thisBinding = thisBinding ||  null;
 
 				for (let i = 0; i < node.params.length; i++) {
 					const param = node.params[i];
@@ -189,8 +189,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 				}
 
 				try {
-					const result = this.visit(node.body, newEnv);
-					return result;
+					return this.visit(node.body, newEnv);
 				} catch (e) {
 					if (e instanceof ReturnSignal) {
 						return e.value;
@@ -204,7 +203,7 @@ class InterpreterEvaluator extends InterpreterVisitor {
 
 	// Вызов функции
 	visitCallExpression(node, env) {
-		this.log('Вызов visitCallExpression');
+		this.log('Вызов функции');
 
 		const callee = this.visit(node.callee, env);
 		const args = node.arguments.map(arg => this.visit(arg, env));
@@ -213,8 +212,14 @@ class InterpreterEvaluator extends InterpreterVisitor {
 			return callee(...args);
 		}
 
-		if (callee.type === 'function') {
+		if (callee?.type === 'function') {
 			return callee.call(args);
+		}
+
+		const classDef = env.get(node.callee.name);
+
+		if (classDef || classDef?.type === 'class') {
+			return classDef.new(args);
 		}
 
 		this.error('Вызываемый объект не является функцией', node);

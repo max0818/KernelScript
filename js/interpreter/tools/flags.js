@@ -3,7 +3,10 @@ class InterpreterFlags extends InterpreterEvaluator {
 		super();
 	}
 
-	visitFlagDeclaration(node, env) {
+	// Объявление флага
+	visitFlagDeclaration(node) {
+		this.log('Объявление флага');
+
 		const flagName = node.name;
 		InterpreterManager.flags.push(flagName);
 
@@ -13,6 +16,8 @@ class InterpreterFlags extends InterpreterEvaluator {
 	}
 
 	activateFlag(name) {
+		this.log('Активация флага...');
+
 		switch(name) {
 			case 'Typing':
 				this.activateTypingMethods();
@@ -32,6 +37,11 @@ class InterpreterFlags extends InterpreterEvaluator {
 				InterpreterManager.globalEnv.declare(name, {name: 'function'}, fn);
 			}
 		}
+	}
+
+	callFunction(func) {
+		if (func?.type === 'function') return func.call;
+		return func;
 	}
 
 	// --- Методы флагов ---
@@ -67,7 +77,7 @@ class InterpreterFlags extends InterpreterEvaluator {
 				} else return false;
 			},
 			input: (message = '') => {
-				return prompt(message) || '';
+				return prompt(message) || false;
 			},
 			clear: () => {
 				console.clear();
@@ -80,12 +90,14 @@ class InterpreterFlags extends InterpreterEvaluator {
 
 	// Time
 	activateTimeMethods() {
+		this.log('Добавлен флаг Time');
+
 		const obj = {
 			sleep: (seconds = 0) => {
 				// WIP
 			},
 			timeout: (func, seconds = 1) => {
-				return setTimeout(func, seconds * 1000);
+				return setTimeout(this.callFunction(func), seconds * 1000);
 			},
 			interval: (func, seconds = 1, maxSteps = Infinity) => {
 				const max = maxSteps;
@@ -93,7 +105,7 @@ class InterpreterFlags extends InterpreterEvaluator {
 
 				return setInterval(() => {
 					if (i >= max) return;
-					func();
+					this.callFunction(func)();
 					++i;
 				}, seconds * 1000);
 			},
@@ -106,5 +118,12 @@ class InterpreterFlags extends InterpreterEvaluator {
 		};
 
 		this.addFlagMethods(obj);
+	}
+
+	// Math
+	activateMathMethods() {
+		const obj = {
+			ceil: {},
+		};
 	}
 }

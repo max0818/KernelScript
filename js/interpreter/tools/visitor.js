@@ -22,7 +22,7 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Инициализация программы
 	visitProgram(node, env) {
-		this.log('Вызов visitProgram');
+		this.log('Инициализация программы');
 
 		let result = null;
 
@@ -35,7 +35,7 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Общий метод выражений
 	visitExpressionStatement(node, env) {
-		this.log('Вызов visitExpressionStatement');
+		this.log('Обработка выражения');
 
 		return this.visit(node.expression, env);
 	}
@@ -44,7 +44,7 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Литерал
 	visitLiteral(node) {
-		this.log('Вызов visitLiteral');
+		this.log('Обработка литерала');
 
 		if (['"', "'", '`'].includes(node.value[0])) {
 			return node.value.slice(1, -1);
@@ -55,14 +55,14 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Идентификатор
 	visitIdentifier(node, env) {
-		this.log('Вызов visitIdentifier');
+		this.log('Обработка идентификатора');
 
 		return env.get(node.name);
 	}
 
 	// Null
 	visitNullExpression(node) {
-		this.log('Вызов visitNullExpression');
+		this.log('Обработка Null');
 
 		return node.name;
 	}
@@ -71,7 +71,7 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Массив
 	visitArrayExpression(node, env) {
-		this.log('Вызов visitArrayExpression');
+		this.log('Новый массив');
 
 		const array = [];
 
@@ -84,7 +84,7 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Объект
 	visitObjectExpression(node, env) {
-		this.log('Вызов visitObjectExpression');
+		this.log('Новый объект');
 
 		const object = {};
 
@@ -97,7 +97,7 @@ class InterpreterVisitor extends InterpreterBase {
 
 	// Блок
 	visitBlockStatement(node, env) {
-		this.log('Вызов visitBlockStatement');
+		this.log('Создание блока');
 
 		const childEnv = this.createEnv(env);
 

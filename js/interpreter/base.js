@@ -104,7 +104,7 @@ class InterpreterBase {
 
 		if (typeof value === 'string') return 'string';
 		if (Array.isArray(value)) return 'array';
-		if (typeof value === 'object') return 'object';
+		if (typeof value === 'object' || value?.type === 'class') return 'object';
 
 		return 'any';
 	}
