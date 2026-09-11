@@ -20,13 +20,7 @@ const code = `
 
 flag Console
 
-class x {
-	init(a) {
-		print(a)
-	}
-}
-
-new x()
+print(0b001 << 2)
 
 `;
 

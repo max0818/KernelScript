@@ -123,6 +123,19 @@ class InterpreterEvaluator extends InterpreterVisitor {
 		return null;
 	}
 
+	// Тернарный оператор
+	visitTernaryExpression(node, env) {
+		this.log('Объявление тернарного оператора');
+
+		const test = this.visit(node.condition, env);
+
+		if (test) {
+			return this.visit(node.consequent, env);
+		} else {
+			return this.visit(node.alternate, env);
+		}
+	}
+
 	// --- Циклы ---
 
 	// While
